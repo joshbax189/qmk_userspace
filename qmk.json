@@ -1,6 +1,8 @@
 {
     "userspace_version": "1.1",
     "build_targets": [
-        ["sofle/keyhive", "basic"]
+        ["sofle/keyhive", "basic"],
+        ["xiudi/xd75", "via"],
+        ["xiudi/xd75", "split"]
     ]
 }
