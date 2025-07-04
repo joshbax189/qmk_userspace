@@ -23,3 +23,8 @@ for more options.
 */
 
 #define EE_HANDS
+
+// this is only used once EEPROM is reset
+// if COMMAND is used, press both shifts and backspace
+#define RGBLIGHT_DEFAULT_HUE 128
+#define RGBLIGHT_DEFAULT_VAL 50
