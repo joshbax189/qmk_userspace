@@ -2,6 +2,7 @@
     "keyboard_name": "Sofle",
     "rgblight": {
         "led_count": 74,
+        "split": true,
         "split_count": [37, 37],
         "sleep": true
     },
