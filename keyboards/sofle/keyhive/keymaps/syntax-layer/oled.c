@@ -1,5 +1,7 @@
 // see functions in sofle.c in main directory
 
+#include "version.h"
+
 #ifdef OLED_ENABLE
 
 static void render_logo(void) {
@@ -10,6 +12,8 @@ static void render_logo(void) {
     };
 
     oled_write_P(qmk_logo, false);
+    oled_write_P(PSTR("  "), false);
+    oled_write_P(PSTR(QMK_VERSION), false);
 }
 
 static void print_my_status(void) {
