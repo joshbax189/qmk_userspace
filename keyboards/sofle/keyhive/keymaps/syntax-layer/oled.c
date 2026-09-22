@@ -18,24 +18,13 @@ static void render_logo(void) {
 
 static void print_my_status(void) {
     // Print current layer
-    oled_write_ln_P(PSTR("LAYER"), false);
-    switch (get_highest_layer(layer_state)) {
-        case 0:
-            oled_write_P(PSTR("Base\n"), false);
-            break;
-        case 1:
-            oled_write_P(PSTR("Lower"), false);
-            break;
-        case 2:
-            oled_write_P(PSTR("Raise"), false);
-            break;
-        default:
-            oled_write_ln_P(PSTR("Undef"), false);
-    }
-    oled_write_P(PSTR("\n\n"), false);
+    oled_write_ln_P(get_highest_layer(layer_state) == 0 ? PSTR(">BASE") : PSTR(" BASE"), false);
+    oled_write_ln_P(get_highest_layer(layer_state) == 1 ? PSTR(">SYM") : PSTR(" SYM"), false);
+    oled_write_ln_P(get_highest_layer(layer_state) == 2 ? PSTR(">MVMT") : PSTR(" MVMT"), false);
+    oled_write_ln_P(PSTR("-----"), false);
 
     led_t led_usb_state = host_keyboard_led_state();
-    oled_write_ln_P(PSTR("CPSLK"), led_usb_state.caps_lock);
+    oled_write_ln_P(PSTR("CAPS"), led_usb_state.caps_lock);
 }
 
 bool oled_task_user(void) {
