@@ -5,4 +5,5 @@ EXTRAKEY_ENABLE = yes
 LTO_ENABLE = yes
 RGBLIGHT_ENABLE = yes
 RGB_MATRIX_ENABLE = no
-COMMAND_ENABLE = yes
+# disable so that LSFT and RSFT can send _
+# COMMAND_ENABLE = yes
