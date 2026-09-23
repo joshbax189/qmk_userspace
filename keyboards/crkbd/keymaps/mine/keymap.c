@@ -103,22 +103,11 @@ void oled_render_layer_state(void) {
 
 void oled_render_mods(void) {
     const uint8_t mods = get_mods() | get_oneshot_mods();
-    if (mods) {
-        if (mods & MOD_MASK_CTRL) {
-            oled_write_ln_P(PSTR("Ctrl"), false);
-        }
-        if (mods & MOD_MASK_ALT) {
-            oled_write_ln_P(PSTR("Alt"), false);
-        }
-        if (mods & MOD_MASK_GUI) {
-            oled_write_ln_P(PSTR("Sup"), false);
-        }
-        if (mods & MOD_MASK_SHIFT) {
-            oled_write_ln_P(PSTR("Shft"), false);
-        }
-    } else {
-        oled_write_ln_P(PSTR(" "), false);
-    }
+    oled_write_P(PSTR("C"), mods & MOD_MASK_CTRL);
+    oled_write_P(PSTR("M"), mods & MOD_MASK_ALT);
+    oled_write_P(PSTR("S"), mods & MOD_MASK_GUI);
+    oled_write_char(0x7F, mods & MOD_MASK_SHIFT);
+    oled_write_P(PSTR("\n"), false);
 }
 
 // only works in wide orientation
