@@ -28,7 +28,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                  KC_LGUI,  LALT_T(KC_SPC),   MO(1),     MO(2),  KC_BSPC, RALT_T(KC_DEL)
+                                  OS_LGUI,  LALT_T(KC_SPC),   MO(1),     MO(2),  KC_BSPC, RALT_T(KC_DEL)
                                       //`--------------------------'  `--------------------------'
 
   ),
@@ -101,7 +101,7 @@ void oled_render_layer_state(void) {
 }
 
 void oled_render_mods(void) {
-    const uint8_t mods = get_mods();
+    const uint8_t mods = get_mods() | get_oneshot_mods();
     if (mods) {
         if (mods & MOD_MASK_CTRL) {
             oled_write_ln_P(PSTR("Ctrl"), false);
@@ -110,13 +110,13 @@ void oled_render_mods(void) {
             oled_write_ln_P(PSTR("Alt"), false);
         }
         if (mods & MOD_MASK_GUI) {
-            oled_write_ln_P(PSTR("Super"), false);
+            oled_write_ln_P(PSTR("Sup"), false);
         }
         if (mods & MOD_MASK_SHIFT) {
-            oled_write_ln_P(PSTR("Shift"), false);
+            oled_write_ln_P(PSTR("Shft"), false);
         }
     } else {
-        oled_write_P(PSTR(" \n \n \n"), false);
+        oled_write_ln_P(PSTR(" "), false);
     }
 }
 
