@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 #include <stdio.h>
+#include "version.h"
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_split_3x6_3(
@@ -130,10 +131,18 @@ void oled_render_logo(void) {
     oled_write_P(crkbd_logo, false);
 }
 
+void oled_render_version(void) {
+    oled_write_ln_P(PSTR(QMK_VERSION), false);
+    oled_write_ln_P(PSTR(QMK_USERSPACE_VERSION), false);
+}
+
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
         oled_render_layer_state();
         oled_render_mods();
+        oled_write_ln_P(PSTR(" "), false);
+        oled_write_ln_P(PSTR(" "), false);
+        oled_render_version();
     }
     return false;
 }
