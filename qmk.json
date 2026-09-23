@@ -3,6 +3,7 @@
     "build_targets": [
         ["sofle/keyhive", "basic"],
         ["xiudi/xd75", "via"],
-        ["xiudi/xd75", "split"]
+        ["xiudi/xd75", "split"],
+        ["crkbd/rev1", "mine"]
     ]
 }
