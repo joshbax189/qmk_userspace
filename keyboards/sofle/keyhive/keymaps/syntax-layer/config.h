@@ -24,3 +24,9 @@
 // if COMMAND is used, press both shifts and backspace
 #define RGBLIGHT_DEFAULT_HUE 128
 #define RGBLIGHT_DEFAULT_VAL 50
+
+#undef RGB_MATRIX_LED_COUNT
+#define RGB_MATRIX_LED_COUNT 74
+
+#undef RGB_MATRIX_SPLIT
+#define RGB_MATRIX_SPLIT { 37, 37 }
