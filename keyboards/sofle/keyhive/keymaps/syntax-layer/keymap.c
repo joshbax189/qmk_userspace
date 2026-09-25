@@ -18,6 +18,7 @@
 #include QMK_KEYBOARD_H
 #include "oled.c"
 #include "encoder.c"
+#include "matrix.c"
 
 
 void keyboard_post_init_user(void) {
