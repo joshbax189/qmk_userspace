@@ -17,12 +17,8 @@
 
 #pragma once
 
-/* The way how "handedness" is decided (which half is which),
-see https://docs.qmk.fm/#/feature_split_keyboard?id=setting-handedness
-for more options.
-*/
-
-#define EE_HANDS
+// usb always connected to L side
+#define MASTER_LEFT
 
 // this is only used once EEPROM is reset
 // if COMMAND is used, press both shifts and backspace
