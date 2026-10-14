@@ -32,13 +32,7 @@ bool oled_task_user(void) {
     if (is_keyboard_master()) {
         // menu
         if (get_highest_layer(layer_state) == 3) {
-            oled_clear();
-            for (int i = 0; i < MENU_MAX_LENGTH; i++) {
-                MenuEntry e = get_entry(menu_loc, i);
-                if (e.menuText != NULL) {
-                    oled_write_ln(e.menuText, i == menu_idx);
-                }
-            }
+            oled_print_menu();
         } else {
             print_my_status();
         }

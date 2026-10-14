@@ -112,3 +112,16 @@ void menu_reset() {
     menu_loc_stack_top = -1;
     return;
 }
+
+#ifdef OLED_ENABLE
+void oled_print_menu() {
+    oled_clear();
+    for (int i = 0; i < MENU_MAX_LENGTH; i++) {
+        MenuEntry e = get_entry(menu_loc, i);
+        if (e.menuText != NULL) {
+            oled_write_ln(e.menuText, i == menu_idx);
+        }
+    }
+    return;
+}
+#endif

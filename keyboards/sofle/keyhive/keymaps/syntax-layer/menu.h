@@ -40,6 +40,4 @@ bool menu_right(keyrecord_t*);
 void menu_reset(void);
 MenuEntry get_entry(MenuKeys, uint8_t);
 
-MenuKeys menu_loc;
-uint8_t menu_idx;
-/* MenuEntry all_menus[][MENU_MAX_LENGTH]; */
+void oled_print_menu(void);
