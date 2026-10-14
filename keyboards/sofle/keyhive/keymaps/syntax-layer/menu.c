@@ -55,8 +55,7 @@ MenuEntry all_menus[][MENU_MAX_LENGTH] = {
     // e.g. change encoder function
 };
 
-// currently active entry
-MenuKeys menu_loc = _TOP;
+MenuKeys current_menu = _TOP;
 
 // stack of historical pointers
 // max size = number of menus
@@ -81,7 +80,7 @@ MenuKeys history_pop() {
     if (!history_empty()) {
         return menu_loc_stack[menu_loc_stack_top--];
     } else {
-        return menu_loc;
+        return current_menu;
     }
 }
 
@@ -96,7 +95,7 @@ void menu_up() {
 }
 
 void menu_down() {
-    if (menu_idx + 1 < MENU_MAX_LENGTH && (all_menus[menu_loc][menu_idx+1].menuText != NULL)) {
+    if (menu_idx + 1 < MENU_MAX_LENGTH && (all_menus[current_menu][menu_idx+1].menuText != NULL)) {
         ++menu_idx;
     }
     return;
@@ -104,20 +103,20 @@ void menu_down() {
 
 // back
 void menu_left() {
-    menu_loc = history_pop();
+    current_menu = history_pop();
     return;
 }
 
 // enter/forward/send
 bool menu_right(keyrecord_t* record) {
-    MenuData data = all_menus[menu_loc][menu_idx].menuData;
-    MenuType ty = all_menus[menu_loc][menu_idx].menuType;
+    MenuData data = all_menus[current_menu][menu_idx].menuData;
+    MenuType ty = all_menus[current_menu][menu_idx].menuType;
     switch (ty) {
     case MENU_SUB:
         // push current
-        history_push(menu_loc);
+        history_push(current_menu);
         // go to menu in entry
-        menu_loc = data.subMenu;
+        current_menu = data.subMenu;
         menu_idx = 0;
         return false;
     case MENU_KC:
@@ -130,8 +129,9 @@ bool menu_right(keyrecord_t* record) {
 
 // go back to start
 void menu_reset() {
-    menu_loc = _TOP;
+    current_menu = _TOP;
     menu_loc_stack_top = -1;
+    menu_idx = 0;
     return;
 }
 
@@ -139,7 +139,7 @@ void menu_reset() {
 void oled_print_menu() {
     oled_clear();
     for (int i = 0; i < MENU_MAX_LENGTH; i++) {
-        MenuEntry e = get_entry(menu_loc, i);
+        MenuEntry e = get_entry(current_menu, i);
         if (e.menuText != NULL) {
             oled_write_ln(e.menuText, i == menu_idx);
         }
