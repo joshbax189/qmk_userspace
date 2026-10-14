@@ -10,3 +10,5 @@ RGB_MATRIX_ENABLE = yes
 # disable so that LSFT and RSFT can send _
 COMMAND_ENABLE = no
 MOUSEKEY_ENABLE = no
+# required for menu feature
+COMBO_ENABLE = yes

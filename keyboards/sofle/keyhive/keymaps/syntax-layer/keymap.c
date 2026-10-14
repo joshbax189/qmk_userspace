@@ -19,7 +19,17 @@
 #include "oled.c"
 #include "encoder.c"
 #include "matrix.c"
+#include "menu.c"
 
+enum custom_keycodes {
+    MENU = SAFE_RANGE,
+    MENU_L,
+    MENU_R,
+    MENU_U,
+    MENU_D,
+    MENU_EX,
+
+};
 
 void keyboard_post_init_user(void) {
 }
@@ -28,6 +38,7 @@ enum layers {
     _QWERTY,
     _RAISE,
     _LOWER,
+    _MENU
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -94,6 +105,53 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   UG_TOGG, KC_INS,   KC_PSCR,  KC_APP,   XXXXXXX,  KC_VOLU,                        KC_PGUP, KC_HOME, KC_UP,   KC_END,   _______, _______,
   KC_CAPS, KC_LALT,  KC_LCTL,  KC_LSFT,  XXXXXXX,  KC_VOLD,                        KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,  KC_DEL,  _______,
   RM_NEXT, KC_UNDO,  KC_CUT,   KC_COPY,  KC_PASTE, KC_MUTE,  _______,       _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+                        _______, _______, _______, _______, _______,       TT(_MENU), _______, _______, _______, _______
+),
+[_MENU] = LAYOUT(
+  _______, _______, _______, _______, _______, _______,                        _______, _______, _______, _______ , _______, _______,
+  _______, _______, _______, _______, _______, _______,                        _______, _______, _______,  _______, _______, _______,
+  _______, _______, _______, _______, _______, _______,                        _______, MENU_L, MENU_U, MENU_D, MENU_R,  _______,
+  _______, _______, _______, _______, _______, _______,  _______,       _______, _______, _______, _______, _______, _______, _______,
                          _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
 )
 };
+
+// stub combos array so we can use keycode in keyrecord
+combo_t key_combos[] = {};
+
+bool process_record_kb(uint16_t keycode, keyrecord_t* record) {
+    switch (keycode) {
+    case MENU:
+        // MENU should open menu/enable layer
+        layer_on(_MENU);
+        return false;
+    // nav keys should move menu
+    case MENU_L:
+        if (record->event.pressed) {
+            menu_left();
+        }
+        return false;
+    case MENU_R:
+        if (record->event.pressed) {
+            menu_right(record);
+        }
+        return false;
+    case MENU_U:
+        if (record->event.pressed) {
+            menu_up();
+        }
+        return false;
+    case MENU_D:
+        if (record->event.pressed) {
+            menu_down();
+        }
+        return false;
+    case MENU_EX:
+        // MENU_EX should quit menu mode
+        layer_off(_MENU);
+        menu_reset();
+        return false;
+    default:
+        return true;
+    }
+}

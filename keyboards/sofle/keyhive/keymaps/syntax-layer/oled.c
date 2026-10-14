@@ -1,6 +1,7 @@
 // see functions in sofle.c in main directory
 
 #include "version.h"
+#include "menu.h"
 
 #ifdef OLED_ENABLE
 
@@ -29,7 +30,18 @@ static void print_my_status(void) {
 
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
-        print_my_status();
+        // menu
+        if (get_highest_layer(layer_state) == 3) {
+            // TODO clear existing
+            for (int i = 0; i < MENU_MAX_LENGTH; i++) {
+                MenuEntry e = get_entry(menu_loc, i);
+                if (e.menuText != NULL) {
+                    oled_write_ln(e.menuText, i == menu_idx);
+                }
+            }
+        } else {
+            print_my_status();
+        }
     } else {
         render_logo();
     }
