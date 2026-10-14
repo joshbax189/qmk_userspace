@@ -1,5 +1,3 @@
-/* #include <stdio.h> */
-/* #include <stdint.h> */
 #include QMK_KEYBOARD_H
 #include "menu.h"
 
@@ -32,7 +30,7 @@ MenuKeys menu_loc = _TOP;
 
 // stack of historical pointers
 // max size = number of menus
-MenuKeys menu_loc_stack[4] = {};
+MenuKeys menu_loc_stack[ARRAY_SIZE(all_menus)] = {};
 uint8_t menu_loc_stack_top = -1; // empty
 uint8_t menu_idx = 0;
 
@@ -91,11 +89,6 @@ bool menu_right(keyrecord_t* record) {
         menu_idx = 0;
         return false;
     case MENU_KC:
-        // TODO sends wrong code
-        // I think it's probably limited to basic codes, and sends too late in the chain -- type checker warns about converting TO uint8_t in tap_code
-        // option 1: define maps with thunks that exec the key's function?
-        // option 2: figure out how to inject the full keycode back
-        // tap_code16(data.keycode);
         record->keycode = data.keycode;
         process_record_quantum(record);
         return true;
@@ -106,37 +99,6 @@ bool menu_right(keyrecord_t* record) {
 // go back to start
 void menu_reset() {
     menu_loc = _TOP;
-    // menu_loc_stack = {}; // doesn't work in C
     menu_loc_stack_top = -1;
     return;
 }
-
-/* int main() { */
-/*     char input; */
-/*     while (true) { */
-/*         scanf("%c", &input); */
-/*         printf("input=%c\n", input); */
-/*         switch (input) { */
-/*         case 'u': */
-/*             menu_up(); */
-/*             break; */
-/*         case 'd': */
-/*             menu_down(); */
-/*             break; */
-/*         case 'l': */
-/*             menu_left(); */
-/*             break; */
-/*         case 'r': */
-/*             menu_right(); */
-/*             break; */
-/*         case 'x': */
-/*             menu_reset(); */
-/*             break; */
-/*         default: */
-/*             printf("skipping"); */
-/*         } */
-/*         /\* printf("menu_loc=%p\n", menu_loc); *\/ */
-/*         printf("menu %s\n", all_menus[menu_loc][menu_idx].menuText); */
-/*     } */
-/*     return 0; */
-/* } */
