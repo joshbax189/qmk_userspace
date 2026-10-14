@@ -9,13 +9,18 @@ const MenuEntry MENU_END = { NULL, MENU_SUB, { 0 } };
 // note max size is required, no jagged arrays
 MenuEntry all_menus[][MENU_MAX_LENGTH] = {
     [_TOP] = {
+        #ifdef RGB_MATRIX_ENABLE
         { "RGB", MENU_SUB, { .subMenu = _RGB }},
+        #endif
+        #ifdef RGBLIGHT_ENABLE
         { "UG", MENU_SUB,  { .subMenu = _UG }},
+        #endif
         { "BOOT", MENU_SUB, { .subMenu = _BOOT }},
         MENU_END,
     },
+    #ifdef RGB_MATRIX_ENABLE
     [_RGB] = {
-        // TODO only togg works
+        // TODO only togg works -- but all work for UG?
         { "SAT+", MENU_KC, { .keycode = RM_SATU } },
         { "SAT-", MENU_KC, { .keycode = RM_SATD } },
         { "NEXT", MENU_KC, { .keycode = RM_NEXT } },
@@ -25,14 +30,29 @@ MenuEntry all_menus[][MENU_MAX_LENGTH] = {
         { "HUE-", MENU_KC, { .keycode = RM_HUED } },
         MENU_END
     },
+    #endif
+    #ifdef RGBLIGHT_ENABLE
     [_UG] = {
+        { "TOGG", MENU_KC, { .keycode = UG_TOGG } },
         { "NEXT", MENU_KC, { .keycode = UG_NEXT } },
-        MENU_END },
+        { "PREV", MENU_KC, { .keycode = UG_PREV } },
+        { "HUE+", MENU_KC, { .keycode = UG_HUEU } },
+        { "HUE-", MENU_KC, { .keycode = UG_HUED } },
+        { "SAT+", MENU_KC, { .keycode = UG_SATU } },
+        { "SAT-", MENU_KC, { .keycode = UG_SATD } },
+        { "VAL+", MENU_KC, { .keycode = UG_VALU } },
+        { "VAL-", MENU_KC, { .keycode = UG_VALD } },
+        MENU_END
+    },
+    #endif
     [_BOOT] = {
         { "RESET", MENU_KC, { .keycode = QK_RBT } },
-        { "BOOT", MENU_KC, { .keycode = QK_BOOT } },
+        { "BOOT", MENU_KC, { .keycode = QK_BOOT } }, // TODO doesn't work
         MENU_END
     }
+    // TODO magic codes
+    // TODO dispatch custom callbacks?
+    // e.g. change encoder function
 };
 
 // currently active entry
@@ -82,11 +102,13 @@ void menu_down() {
     return;
 }
 
+// back
 void menu_left() {
     menu_loc = history_pop();
     return;
 }
 
+// enter/forward/send
 bool menu_right(keyrecord_t* record) {
     MenuData data = all_menus[menu_loc][menu_idx].menuData;
     MenuType ty = all_menus[menu_loc][menu_idx].menuType;
