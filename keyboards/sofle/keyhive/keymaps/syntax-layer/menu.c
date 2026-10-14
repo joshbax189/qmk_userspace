@@ -15,14 +15,24 @@ MenuEntry all_menus[][MENU_MAX_LENGTH] = {
         MENU_END,
     },
     [_RGB] = {
+        // TODO only togg works
         { "SAT+", MENU_KC, { .keycode = RM_SATU } },
         { "SAT-", MENU_KC, { .keycode = RM_SATD } },
         { "NEXT", MENU_KC, { .keycode = RM_NEXT } },
+        { "PREV", MENU_KC, { .keycode = UG_PREV } },
         { "TOGG", MENU_KC, { .keycode = UG_TOGG } },
+        { "HUE+", MENU_KC, { .keycode = RM_HUEU } },
+        { "HUE-", MENU_KC, { .keycode = RM_HUED } },
         MENU_END
     },
-    [_UG] = { MENU_END },
-    [_BOOT] = { MENU_END }
+    [_UG] = {
+        { "NEXT", MENU_KC, { .keycode = UG_NEXT } },
+        MENU_END },
+    [_BOOT] = {
+        { "RESET", MENU_KC, { .keycode = QK_RBT } },
+        { "BOOT", MENU_KC, { .keycode = QK_BOOT } },
+        MENU_END
+    }
 };
 
 // currently active entry
