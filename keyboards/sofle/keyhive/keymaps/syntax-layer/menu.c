@@ -55,28 +55,35 @@ MenuEntry all_menus[][MENU_MAX_LENGTH] = {
     // e.g. change encoder function
 };
 
-MenuKeys current_menu = _TOP;
+typedef struct {
+    MenuKeys menu;
+    uint8_t idx;
+} MenuLoc;
+
+MenuLoc current_menu = { _TOP, 0 };
 
 // stack of historical pointers
-// max size = number of menus
-MenuKeys menu_loc_stack[ARRAY_SIZE(all_menus)] = {};
-uint8_t menu_loc_stack_top = -1; // empty
+// size = max menu depth
+MenuLoc menu_loc_stack[2] = {};
 int8_t menu_loc_stack_top = -1; // empty
 
 MenuEntry get_entry(MenuKeys sub, uint8_t idx) {
     return all_menus[sub][idx];
 }
 
-bool history_empty() {
+static bool history_empty(void);
+static bool history_empty() {
     return (menu_loc_stack_top == -1);
 }
 
-void history_push(MenuKeys value) {
+static void history_push(MenuLoc value);
+static void history_push(MenuLoc value) {
     menu_loc_stack[++menu_loc_stack_top] = value;
     return;
 }
 
-MenuKeys history_pop() {
+static MenuLoc history_pop(void);
+static MenuLoc history_pop() {
     if (!history_empty()) {
         return menu_loc_stack[menu_loc_stack_top--];
     } else {
@@ -85,8 +92,8 @@ MenuKeys history_pop() {
 }
 
 void menu_up() {
-    if (menu_idx > 0) {
-        --menu_idx;
+    if (current_menu.idx > 0) {
+        --current_menu.idx;
     }
     // TODO how to wrap?
     // no wrap: menu_loc = max(menu_start, menu_loc - 1)
@@ -95,8 +102,8 @@ void menu_up() {
 }
 
 void menu_down() {
-    if (menu_idx + 1 < MENU_MAX_LENGTH && (all_menus[current_menu][menu_idx+1].menuText != NULL)) {
-        ++menu_idx;
+    if (current_menu.idx + 1 < MENU_MAX_LENGTH && (all_menus[current_menu.menu][current_menu.idx+1].menuText != NULL)) {
+        ++current_menu.idx;
     }
     return;
 }
@@ -109,15 +116,15 @@ void menu_left() {
 
 // enter/forward/send
 bool menu_right(keyrecord_t* record) {
-    MenuData data = all_menus[current_menu][menu_idx].menuData;
-    MenuType ty = all_menus[current_menu][menu_idx].menuType;
+    MenuData data = all_menus[current_menu.menu][current_menu.idx].menuData;
+    MenuType ty = all_menus[current_menu.menu][current_menu.idx].menuType;
     switch (ty) {
     case MENU_SUB:
-        // push current
+        // push current (a copy)
         history_push(current_menu);
         // go to menu in entry
-        current_menu = data.subMenu;
-        menu_idx = 0;
+        current_menu.menu = data.subMenu;
+        current_menu.idx = 0;
         return false;
     case MENU_KC:
         record->keycode = data.keycode;
@@ -129,9 +136,9 @@ bool menu_right(keyrecord_t* record) {
 
 // go back to start
 void menu_reset() {
-    current_menu = _TOP;
+    current_menu.menu = _TOP;
+    current_menu.idx = 0;
     menu_loc_stack_top = -1;
-    menu_idx = 0;
     return;
 }
 
@@ -139,9 +146,9 @@ void menu_reset() {
 void oled_print_menu() {
     oled_clear();
     for (int i = 0; i < MENU_MAX_LENGTH; i++) {
-        MenuEntry e = get_entry(current_menu, i);
+        MenuEntry e = get_entry(current_menu.menu, i);
         if (e.menuText != NULL) {
-            oled_write_ln(e.menuText, i == menu_idx);
+            oled_write_ln(e.menuText, i == current_menu.idx);
         }
     }
     return;

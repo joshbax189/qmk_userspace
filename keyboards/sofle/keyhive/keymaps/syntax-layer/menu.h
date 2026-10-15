@@ -30,9 +30,6 @@ struct MenuEntry {
     MenuData menuData; // either a pointer or a keycode
 };
 
-bool history_empty(void);
-void history_push(MenuKeys);
-MenuKeys history_pop(void);
 void menu_up(void);
 void menu_down(void);
 void menu_left(void);
