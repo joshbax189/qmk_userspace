@@ -61,7 +61,7 @@ MenuKeys current_menu = _TOP;
 // max size = number of menus
 MenuKeys menu_loc_stack[ARRAY_SIZE(all_menus)] = {};
 uint8_t menu_loc_stack_top = -1; // empty
-uint8_t menu_idx = 0;
+int8_t menu_loc_stack_top = -1; // empty
 
 MenuEntry get_entry(MenuKeys sub, uint8_t idx) {
     return all_menus[sub][idx];
