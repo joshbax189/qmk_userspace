@@ -1,0 +1,204 @@
+layout: {qmk_keyboard: planck/rev6, layout_name: LAYOUT_ortho_4x12}
+layers:
+  L0:
+  - TAB
+  - Q
+  - W
+  - E
+  - R
+  - T
+  - Y
+  - U
+  - I
+  - O
+  - P
+  - QK GESC
+  - LCTL
+  - A
+  - S
+  - D
+  - F
+  - G
+  - H
+  - J
+  - K
+  - L
+  - ;
+  - ''''
+  - LSFT
+  - Z
+  - X
+  - C
+  - V
+  - B
+  - N
+  - M
+  - ','
+  - .
+  - /
+  - {t: ENT, h: RSFT}
+  - ESC
+  - DEL
+  - LGUI
+  - LALT
+  - LOWER
+  - SPC
+  - BSPC
+  - RAISE
+  - LEFT
+  - DOWN
+  - UP
+  - RGHT
+  L1: [TAB, Q, W, F, P, G, J, L, U, Y, ;, BSPC, ESC, A, R, S, T, D, H, N, E, I, O, '''', LSFT, Z, X, C, V, B, K, M, ',', ., /, ENT, BACKLIT, LCTL, LALT, LGUI, LOWER,
+    SPC, SPC, RAISE, LEFT, DOWN, UP, RGHT]
+  L2: [TAB, '''', ',', ., P, Y, F, G, C, R, L, BSPC, ESC, A, O, E, U, I, D, H, T, N, S, /, LSFT, ;, Q, J, K, X, B, M, W, V, Z, ENT, BACKLIT, LCTL, LALT, LGUI, LOWER,
+    SPC, SPC, RAISE, LEFT, DOWN, UP, RGHT]
+  L3:
+  - '~'
+  - '!'
+  - '@'
+  - '#'
+  - $
+  - '%'
+  - ^
+  - '&'
+  - '*'
+  - (
+  - )
+  - {t: ▽, type: trans}
+  - DEL
+  - F1
+  - F2
+  - F3
+  - F4
+  - F5
+  - F6
+  - _
+  - +
+  - '{'
+  - '}'
+  - '|'
+  - {t: ▽, type: trans}
+  - F7
+  - F8
+  - F9
+  - F10
+  - F11
+  - F12
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - HOME
+  - END
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - MNXT
+  - VOLD
+  - VOLU
+  - MPLY
+  L4:
+  - '`'
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - '6'
+  - '7'
+  - '8'
+  - '9'
+  - '0'
+  - {t: ▽, type: trans}
+  - DEL
+  - F1
+  - F2
+  - F3
+  - F4
+  - F5
+  - F6
+  - '-'
+  - '='
+  - '['
+  - ']'
+  - \
+  - {t: ▽, type: trans}
+  - F7
+  - F8
+  - F9
+  - F10
+  - F11
+  - F12
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - PGUP
+  - PGDN
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - MNXT
+  - VOLD
+  - VOLU
+  - MPLY
+  L5: ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '', Q, W, E, R, T, Y, U, I, O, P, '[', '', A, S, D, F, G, H, J, K, L, ;, '''', EXT PLV, '', '',
+    C, V, '', '', N, M, '', '', '']
+  L6:
+  - {t: ▽, type: trans}
+  - QK BOOT
+  - DB TOGG
+  - UG TOGG
+  - UG NEXT
+  - UG HUEU
+  - UG HUED
+  - UG SATU
+  - UG SATD
+  - UG VALU
+  - UG VALD
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - MU NEXT
+  - AU ON
+  - AU OFF
+  - AG NORM
+  - AG SWAP
+  - QWERTY
+  - COLEMAK
+  - DVORAK
+  - PLOVER
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - AU PREV
+  - AU NEXT
+  - MU ON
+  - MU OFF
+  - MI ON
+  - MI OFF
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
