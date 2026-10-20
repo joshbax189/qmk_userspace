@@ -1,0 +1,306 @@
+layout: {qmk_keyboard: xiudi/xd75, layout_name: LAYOUT_ortho_5x15}
+layers:
+  L0:
+  - ESC
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '6'
+  - '7'
+  - '8'
+  - '9'
+  - '0'
+  - DEL
+  - TAB
+  - Q
+  - W
+  - E
+  - R
+  - T
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - Y
+  - U
+  - I
+  - O
+  - P
+  - \
+  - LCTL
+  - A
+  - S
+  - D
+  - F
+  - G
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - H
+  - J
+  - K
+  - L
+  - ;
+  - ENT
+  - LSFT
+  - Z
+  - X
+  - C
+  - V
+  - B
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - N
+  - M
+  - ','
+  - .
+  - /
+  - RSFT
+  - CX
+  - LGUI
+  - LGUI
+  - LALT
+  - FUNC
+  - SPC
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - BSPC
+  - SYNTAX
+  - RCTL
+  - RALT
+  - RGUI
+  - NUM
+  L1:
+  - QK BOOT
+  - F1
+  - F2
+  - F3
+  - F4
+  - F5
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - F6
+  - F7
+  - F8
+  - F9
+  - F10
+  - F11
+  - {t: ▽, type: trans}
+  - MSTP
+  - VOLU
+  - MPLY
+  - UG HUED
+  - UG HUEU
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - PGUP
+  - HOME
+  - UP
+  - END
+  - SCRL
+  - F12
+  - CAPS
+  - MPRV
+  - VOLD
+  - MNXT
+  - UG SATD
+  - UG SATU
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - PGDN
+  - LEFT
+  - DOWN
+  - RGHT
+  - {t: ▽, type: trans}
+  - PAUS
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - MUTE
+  - {t: ▽, type: trans}
+  - UG VALD
+  - UG VALU
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - UG TOGG
+  - {t: ▽, type: trans}
+  - UG PREV
+  - UG NEXT
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  L2:
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - +
+  - '-'
+  - '*'
+  - '='
+  - '`'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - PGUP
+  - HOME
+  - UP
+  - END
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '{'
+  - '}'
+  - (
+  - )
+  - ''''
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - PGDN
+  - LEFT
+  - DOWN
+  - RGHT
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '['
+  - ']'
+  - _
+  - '~'
+  - '"'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  L3:
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '7'
+  - '8'
+  - '9'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - +
+  - '-'
+  - '*'
+  - /
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '0'
+  - '4'
+  - '5'
+  - '6'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '1'
+  - '2'
+  - '3'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
