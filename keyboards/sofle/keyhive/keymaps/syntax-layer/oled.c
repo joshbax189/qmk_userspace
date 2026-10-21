@@ -1,7 +1,6 @@
 // see functions in sofle.c in main directory
 
 #include "version.h"
-#include "menu.h"
 
 #ifdef OLED_ENABLE
 

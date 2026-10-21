@@ -1,0 +1,41 @@
+* OLED Key Menu
+
+A menu for OLED displays that exposes keycodes without needing to add them to a layer.
+
+** Installation
+
+1. import module
+   - check out submodule to qmk_userspace/modules
+   - add joshbax189/oled_key_menu to keymap.json
+2. define a layer for menu keys, bind those keys
+   - example
+3. in oled handler: add render function when layer is active
+   - example
+
+** Configuration
+
+*** remove a visible menu
+
+*** remove or change an entry in a menu
+
+*** reorder menus
+
+*** adding a menu
+
+** Tasks
+*** TODO make a community module
+[[file:~/qmk_firmware/docs/features/community_modules.md]]
+
+**** DONE move key definitions
+**** TODO match to interface
+- what should go in introspect?
+- check it can be loaded
+
+*** move to a ragged array
+this might reduce size and be cleaner
+*** use bit fields in structs for smaller tags
+looked up on gemini
+*** can you call custom callbacks?
+how would you interface to this?
+*** can you avoid the combos feature?
+this might cut down size too

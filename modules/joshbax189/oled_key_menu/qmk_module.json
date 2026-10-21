@@ -1,0 +1,26 @@
+{
+    "module_name": "OLED Key Menu",
+    "maintainer": "Josh Bax",
+    "license": "GPL-2.0-or-later",
+    "features": {
+        "combos": true
+    },
+    "keycodes": [
+        {
+            "key": "MENU_UP",
+            "aliases": ["MENUU"]
+        },
+        {
+            "key": "MENU_DOWN",
+            "aliases": ["MENUD"]
+        },
+        {
+            "key": "MENU_LEFT",
+            "aliases": ["MENUL"]
+        },
+        {
+            "key": "MENU_RIGHT",
+            "aliases": ["MENUR"]
+        }
+    ]
+}
