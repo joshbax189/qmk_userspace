@@ -16,6 +16,7 @@ MenuEntry all_menus[][MENU_MAX_LENGTH] = {
         { "UG", MENU_SUB,  { .subMenu = _UG }},
         #endif
         { "BOOT", MENU_SUB, { .subMenu = _BOOT }},
+        { "MAGIC", MENU_SUB, { .subMenu = _MAGIC }},
         MENU_END,
     },
     #ifdef RGB_MATRIX_ENABLE
@@ -49,8 +50,66 @@ MenuEntry all_menus[][MENU_MAX_LENGTH] = {
         { "RESET", MENU_KC, { .keycode = QK_RBT } },
         { "BOOT", MENU_KC, { .keycode = QK_BOOT } }, // TODO doesn't work
         MENU_END
-    }
-    // TODO magic codes
+    },
+    [_MAGIC] = {
+/* { "CL_SWAP", MENU_KC, { .keycode = CL_SWAP } }, */
+/* { "CL_NORM", MENU_KC, { .keycode = CL_NORM } }, */
+/* { "CL_CTRL", MENU_KC, { .keycode = CL_CTRL } }, */
+/* { "CL_CAPS", MENU_KC, { .keycode = CL_CAPS } }, */
+/* { "EC_SWAP", MENU_KC, { .keycode = EC_SWAP } }, */
+/* { "EC_NORM", MENU_KC, { .keycode = EC_NORM } }, */
+/* { "CG_LSWP", MENU_KC, { .keycode = CG_LSWP } }, */
+/* { "CG_LNRM", MENU_KC, { .keycode = CG_LNRM } }, */
+/* { "CG_RSWP", MENU_KC, { .keycode = CG_RSWP } }, */
+/* { "CG_RNRM", MENU_KC, { .keycode = CG_RNRM } }, */
+/* { "CG_SWAP", MENU_KC, { .keycode = CG_SWAP } }, */
+/* { "CG_NORM", MENU_KC, { .keycode = CG_NORM } }, */
+/* { "AG_LSWP", MENU_KC, { .keycode = AG_LSWP } }, */
+/* { "AG_LNRM", MENU_KC, { .keycode = AG_LNRM } }, */
+/* { "AG_RSWP", MENU_KC, { .keycode = AG_RSWP } }, */
+/* { "AG_RNRM", MENU_KC, { .keycode = AG_RNRM } }, */
+/* { "AG_SWAP", MENU_KC, { .keycode = AG_SWAP } }, */
+/* { "AG_NORM", MENU_KC, { .keycode = AG_NORM } }, */
+/* { "GE_SWAP", MENU_KC, { .keycode = GE_SWAP } }, */
+/* { "GE_NORM", MENU_KC, { .keycode = GE_NORM } }, */
+/* { "BS_SWAP", MENU_KC, { .keycode = BS_SWAP } }, */
+/* { "BS_NORM", MENU_KC, { .keycode = BS_NORM } }, */
+        { "NKRO", MENU_SUB, { .subMenu = _NKRO }},
+        { "SWAP", MENU_SUB, { .subMenu = _SWAP }},
+        { "GKEYS", MENU_SUB, { .subMenu = _GUI }},
+        { "SPLIT", MENU_SUB, { .subMenu = _SPLIT }},
+        MENU_END
+    },
+    [_SWAP] = {
+        // Caps/LCtrl
+        { "CL", MENU_KC, { .keycode = CL_TOGG } },
+        // Esc/Caps
+        { "EC", MENU_KC, { .keycode = EC_TOGG } },
+        // Ctrl/GUI both sides
+        { "CG", MENU_KC, { .keycode = CG_TOGG } },
+        // Alt/GUI both sides
+        { "AG", MENU_KC, { .keycode = AG_TOGG } },
+        // \/Bspc
+        { "BS", MENU_KC, { .keycode = BS_TOGG } },
+        MENU_END
+    },
+    [_NKRO] = {
+        { "ON"  , MENU_KC, { .keycode = NK_ON } },
+        { "OFF" , MENU_KC, { .keycode = NK_OFF } },
+        { "TOGG", MENU_KC, { .keycode = NK_TOGG } },
+        MENU_END
+    },
+    [_SPLIT] = {
+        { "EH_LEFT", MENU_KC, { .keycode = EH_LEFT } },
+        { "EH_RGHT", MENU_KC, { .keycode = EH_RGHT } },
+        MENU_END
+    },
+    [_GUI] = {
+        { "GU_OFF" , MENU_KC, { .keycode = GU_OFF } },
+        { "GU_ON"  , MENU_KC, { .keycode = GU_ON } },
+        { "GU_TOGG", MENU_KC, { .keycode = GU_TOGG } },
+        MENU_END
+    },
     // TODO dispatch custom callbacks?
     // e.g. change encoder function
 };
@@ -62,9 +121,10 @@ typedef struct {
 
 MenuLoc current_menu = { _TOP, 0 };
 
+// TODO not a true stack e.g. back, forwards doesn't keep position
 // stack of historical pointers
 // size = max menu depth
-MenuLoc menu_loc_stack[2] = {};
+MenuLoc menu_loc_stack[3] = {};
 int8_t menu_loc_stack_top = -1; // empty
 
 MenuEntry get_entry(MenuKeys sub, uint8_t idx) {

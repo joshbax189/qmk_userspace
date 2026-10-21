@@ -3,11 +3,17 @@
 // longest sub menu
 #define MENU_MAX_LENGTH 10
 
+/* Entries in the menu matrix */
 typedef enum {
     _TOP,
     _RGB,
     _UG,
-    _BOOT
+    _BOOT,
+    _MAGIC,
+    _SWAP,
+    _NKRO,
+    _GUI,
+    _SPLIT
 } MenuKeys;
 
 /* The action this menu will produce */
