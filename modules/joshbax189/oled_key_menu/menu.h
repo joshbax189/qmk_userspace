@@ -3,9 +3,6 @@
 
 #include QMK_KEYBOARD_H
 
-// longest sub menu
-#define MENU_MAX_LENGTH 10
-
 // stub combos array so we can use keycode in keyrecord
 // expect these will be overridden in user's keymap
 __attribute__((weak)) combo_t key_combos[] = {};

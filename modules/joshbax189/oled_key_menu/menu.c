@@ -19,59 +19,57 @@ void process_record_quantum(keyrecord_t* x) {
 
 #include "menu.h"
 
-// use as a delimiter in menus
-// a consequence of nested menu definition
+// use as a delimiter in menus -- avoid storing menu size
 const MenuEntry MENU_END = { NULL, MENU_SUB, { 0 } };
 
-// TODO could convert MENU_KC and MENU_SUB to struct with bitfields, may save space?
+MenuEntry top_menu[] = {
+#ifdef RGB_MATRIX_ENABLE
+    { "RGB", MENU_SUB, { .subMenu = _RGB }},
+#endif
+#ifdef RGBLIGHT_ENABLE
+    { "UG", MENU_SUB,  { .subMenu = _UG }},
+#endif
+    { "BOOT", MENU_SUB, { .subMenu = _BOOT }},
+    { "MAGIC", MENU_SUB, { .subMenu = _MAGIC }},
+    MENU_END,
+};
 
-// this is limited to 2 level menus
-// note max size is required, no jagged arrays
-MenuEntry all_menus[][MENU_MAX_LENGTH] = {
-    [_TOP] = {
-        #ifdef RGB_MATRIX_ENABLE
-        { "RGB", MENU_SUB, { .subMenu = _RGB }},
-        #endif
-        #ifdef RGBLIGHT_ENABLE
-        { "UG", MENU_SUB,  { .subMenu = _UG }},
-        #endif
-        { "BOOT", MENU_SUB, { .subMenu = _BOOT }},
-        { "MAGIC", MENU_SUB, { .subMenu = _MAGIC }},
-        MENU_END,
-    },
-    #ifdef RGB_MATRIX_ENABLE
-    [_RGB] = {
-        // TODO only togg works -- but all work for UG?
-        { "SAT+", MENU_KC, { .keycode = RM_SATU } },
-        { "SAT-", MENU_KC, { .keycode = RM_SATD } },
-        { "NEXT", MENU_KC, { .keycode = RM_NEXT } },
-        { "PREV", MENU_KC, { .keycode = UG_PREV } },
-        { "TOGG", MENU_KC, { .keycode = UG_TOGG } },
-        { "HUE+", MENU_KC, { .keycode = RM_HUEU } },
-        { "HUE-", MENU_KC, { .keycode = RM_HUED } },
-        MENU_END
-    },
-    #endif
-    #ifdef RGBLIGHT_ENABLE
-    [_UG] = {
-        { "TOGG", MENU_KC, { .keycode = UG_TOGG } },
-        { "NEXT", MENU_KC, { .keycode = UG_NEXT } },
-        { "PREV", MENU_KC, { .keycode = UG_PREV } },
-        { "HUE+", MENU_KC, { .keycode = UG_HUEU } },
-        { "HUE-", MENU_KC, { .keycode = UG_HUED } },
-        { "SAT+", MENU_KC, { .keycode = UG_SATU } },
-        { "SAT-", MENU_KC, { .keycode = UG_SATD } },
-        { "VAL+", MENU_KC, { .keycode = UG_VALU } },
-        { "VAL-", MENU_KC, { .keycode = UG_VALD } },
-        MENU_END
-    },
-    #endif
-    [_BOOT] = {
-        { "RESET", MENU_KC, { .keycode = QK_RBT } },
-        { "BOOT", MENU_KC, { .keycode = QK_BOOT } }, // TODO doesn't work
-        MENU_END
-    },
-    [_MAGIC] = {
+#ifdef RGB_MATRIX_ENABLE
+MenuEntry rgb_menu[] = {
+    // TODO only togg works -- but all work for UG?
+    { "SAT+", MENU_KC, { .keycode = RM_SATU } },
+    { "SAT-", MENU_KC, { .keycode = RM_SATD } },
+    { "NEXT", MENU_KC, { .keycode = RM_NEXT } },
+    { "PREV", MENU_KC, { .keycode = UG_PREV } },
+    { "TOGG", MENU_KC, { .keycode = UG_TOGG } },
+    { "HUE+", MENU_KC, { .keycode = RM_HUEU } },
+    { "HUE-", MENU_KC, { .keycode = RM_HUED } },
+    MENU_END
+};
+#endif
+
+#ifdef RGBLIGHT_ENABLE
+MenuEntry ug_menu[] = {
+    { "TOGG", MENU_KC, { .keycode = UG_TOGG } },
+    { "NEXT", MENU_KC, { .keycode = UG_NEXT } },
+    { "PREV", MENU_KC, { .keycode = UG_PREV } },
+    { "HUE+", MENU_KC, { .keycode = UG_HUEU } },
+    { "HUE-", MENU_KC, { .keycode = UG_HUED } },
+    { "SAT+", MENU_KC, { .keycode = UG_SATU } },
+    { "SAT-", MENU_KC, { .keycode = UG_SATD } },
+    { "VAL+", MENU_KC, { .keycode = UG_VALU } },
+    { "VAL-", MENU_KC, { .keycode = UG_VALD } },
+    MENU_END
+};
+#endif
+
+MenuEntry boot_menu[] = {
+    { "RESET", MENU_KC, { .keycode = QK_RBT } },
+    { "BOOT", MENU_KC, { .keycode = QK_BOOT } }, // TODO doesn't work
+    MENU_END
+};
+
+// TODO other magic codes
 /* { "CL_SWAP", MENU_KC, { .keycode = CL_SWAP } }, */
 /* { "CL_NORM", MENU_KC, { .keycode = CL_NORM } }, */
 /* { "CL_CTRL", MENU_KC, { .keycode = CL_CTRL } }, */
@@ -94,42 +92,64 @@ MenuEntry all_menus[][MENU_MAX_LENGTH] = {
 /* { "GE_NORM", MENU_KC, { .keycode = GE_NORM } }, */
 /* { "BS_SWAP", MENU_KC, { .keycode = BS_SWAP } }, */
 /* { "BS_NORM", MENU_KC, { .keycode = BS_NORM } }, */
-        { "NKRO", MENU_SUB, { .subMenu = _NKRO }},
-        { "SWAP", MENU_SUB, { .subMenu = _SWAP }},
-        { "GKEYS", MENU_SUB, { .subMenu = _GUI }},
-        { "SPLIT", MENU_SUB, { .subMenu = _SPLIT }},
-        MENU_END
-    },
-    [_SWAP] = {
-        // Caps/LCtrl
-        { "CL", MENU_KC, { .keycode = CL_TOGG } },
-        // Esc/Caps
-        { "EC", MENU_KC, { .keycode = EC_TOGG } },
-        // Ctrl/GUI both sides
-        { "CG", MENU_KC, { .keycode = CG_TOGG } },
-        // Alt/GUI both sides
-        { "AG", MENU_KC, { .keycode = AG_TOGG } },
-        // \/Bspc
-        { "BS", MENU_KC, { .keycode = BS_TOGG } },
-        MENU_END
-    },
-    [_NKRO] = {
-        { "ON"  , MENU_KC, { .keycode = NK_ON } },
-        { "OFF" , MENU_KC, { .keycode = NK_OFF } },
-        { "TOGG", MENU_KC, { .keycode = NK_TOGG } },
-        MENU_END
-    },
-    [_SPLIT] = {
-        { "EH_LEFT", MENU_KC, { .keycode = EH_LEFT } },
-        { "EH_RGHT", MENU_KC, { .keycode = EH_RGHT } },
-        MENU_END
-    },
-    [_GUI] = {
-        { "GU_OFF" , MENU_KC, { .keycode = GU_OFF } },
-        { "GU_ON"  , MENU_KC, { .keycode = GU_ON } },
-        { "GU_TOGG", MENU_KC, { .keycode = GU_TOGG } },
-        MENU_END
-    },
+
+MenuEntry magic_menu[] = {
+    { "NKRO", MENU_SUB, { .subMenu = _NKRO }},
+    { "SWAP", MENU_SUB, { .subMenu = _SWAP }},
+    { "GKEYS", MENU_SUB, { .subMenu = _GUI }},
+    { "SPLIT", MENU_SUB, { .subMenu = _SPLIT }},
+    MENU_END
+};
+
+MenuEntry swap_menu[] = {
+    // Caps/LCtrl
+    { "CL", MENU_KC, { .keycode = CL_TOGG } },
+    // Esc/Caps
+    { "EC", MENU_KC, { .keycode = EC_TOGG } },
+    // Ctrl/GUI both sides
+    { "CG", MENU_KC, { .keycode = CG_TOGG } },
+    // Alt/GUI both sides
+    { "AG", MENU_KC, { .keycode = AG_TOGG } },
+    // \/Bspc
+    { "BS", MENU_KC, { .keycode = BS_TOGG } },
+    MENU_END
+};
+
+MenuEntry nkro_menu[] = {
+    { "ON"  , MENU_KC, { .keycode = NK_ON } },
+    { "OFF" , MENU_KC, { .keycode = NK_OFF } },
+    { "TOGG", MENU_KC, { .keycode = NK_TOGG } },
+    MENU_END
+};
+
+MenuEntry split_menu[] = {
+    { "EH_LEFT", MENU_KC, { .keycode = EH_LEFT } },
+    { "EH_RGHT", MENU_KC, { .keycode = EH_RGHT } },
+    MENU_END
+};
+
+MenuEntry gui_menu[] = {
+    { "GU_OFF" , MENU_KC, { .keycode = GU_OFF } },
+    { "GU_ON"  , MENU_KC, { .keycode = GU_ON } },
+    { "GU_TOGG", MENU_KC, { .keycode = GU_TOGG } },
+    MENU_END
+};
+
+/* indexes available menus using MenuKey */
+MenuEntry* all_menus[] = {
+    [_TOP] = top_menu,
+    #ifdef RGB_MATRIX_ENABLE
+    [_RGB] = rgb_menu,
+    #endif
+    #ifdef RGBLIGHT_ENABLE
+    [_UG] = ug_menu,
+    #endif
+    [_BOOT] = boot_menu,
+    [_MAGIC] = magic_menu,
+    [_SWAP] = swap_menu,
+    [_NKRO] = nkro_menu,
+    [_SPLIT] = split_menu,
+    [_GUI] = gui_menu,
     // TODO dispatch custom callbacks?
     // e.g. change encoder function
 };
@@ -182,7 +202,7 @@ void menu_up() {
 }
 
 void menu_down() {
-    if (current_menu.idx + 1 < MENU_MAX_LENGTH && (all_menus[current_menu.menu][current_menu.idx+1].menuText != NULL)) {
+    if (all_menus[current_menu.menu][current_menu.idx+1].menuText != NULL) {
         ++current_menu.idx;
     }
     return;
@@ -226,11 +246,10 @@ void menu_reset() {
 void oled_print_menu() {
     oled_clear();
     uprintf("menu=%d idx=%d", current_menu.menu, current_menu.idx);
-    for (int i = 0; i < MENU_MAX_LENGTH; i++) {
-        MenuEntry e = get_entry(current_menu.menu, i);
-        if (e.menuText != NULL) {
-            oled_write_ln(e.menuText, i == current_menu.idx);
-        }
+    uint8_t i;
+    MenuEntry e;
+    for (i = 0, e = get_entry(current_menu.menu, i); e.menuText != NULL; i++) {
+        oled_write_ln(e.menuText, i == current_menu.idx);
     }
     return;
 }
