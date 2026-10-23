@@ -150,8 +150,6 @@ MenuEntry* all_menus[] = {
     [_NKRO] = nkro_menu,
     [_SPLIT] = split_menu,
     [_GUI] = gui_menu,
-    // TODO dispatch custom callbacks?
-    // e.g. change encoder function
 };
 
 MenuEntry get_entry(MenuKeys sub, uint8_t idx) {
@@ -226,6 +224,9 @@ bool menu_right(keyrecord_t* record) {
     case MENU_KC:
         record->keycode = data.keycode;
         process_record_quantum(record);
+        return true;
+    case MENU_FN:
+        data.menuFn(record);
         return true;
     }
     return false;

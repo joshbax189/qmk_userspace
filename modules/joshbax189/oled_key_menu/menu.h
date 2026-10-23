@@ -20,6 +20,7 @@ typedef enum {
 typedef enum {
     MENU_SUB, // data is another menu
     MENU_KC,  // data is a keycode
+    MENU_FN,  // data is a function
 } MenuType;
 
 typedef struct MenuEntry MenuEntry;
@@ -28,6 +29,7 @@ typedef union MenuData MenuData;
 union MenuData {
     uint16_t keycode;
     MenuKeys subMenu;
+    void (*menuFn)(keyrecord_t*);
 };
 
 struct MenuEntry {
