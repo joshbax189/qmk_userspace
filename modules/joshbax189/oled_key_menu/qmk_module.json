@@ -3,7 +3,7 @@
     "maintainer": "Josh Bax",
     "license": "GPL-2.0-or-later",
     "features": {
-        "combos": true
+        "repeat_key": true
     },
     "keycodes": [
         {

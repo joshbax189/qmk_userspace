@@ -1,2 +1,2 @@
 SRC += menu.c
-COMBO_ENABLE = yes # so that record has a keycode field
+REPEAT_KEY_ENABLE = yes # so that record has a keycode field

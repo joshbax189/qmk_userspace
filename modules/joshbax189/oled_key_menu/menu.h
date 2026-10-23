@@ -3,10 +3,6 @@
 
 #include QMK_KEYBOARD_H
 
-// stub combos array so we can use keycode in keyrecord
-// expect these will be overridden in user's keymap
-__attribute__((weak)) combo_t key_combos[] = {};
-
 /* Entries in the menu matrix */
 typedef enum {
     _TOP,
