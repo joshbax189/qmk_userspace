@@ -154,77 +154,74 @@ MenuEntry* all_menus[] = {
     // e.g. change encoder function
 };
 
-typedef struct {
-    MenuKeys menu;
-    uint8_t idx;
-} MenuLoc;
-
-MenuLoc current_menu = { _TOP, 0 };
-
-// TODO not a true stack e.g. back, forwards doesn't keep position
-// stack of historical pointers
-// size = max menu depth
-MenuLoc menu_loc_stack[3] = {};
-int8_t menu_loc_stack_top = -1; // empty
-
 MenuEntry get_entry(MenuKeys sub, uint8_t idx) {
     return all_menus[sub][idx];
 }
 
+MenuKeys current_menu = _TOP;
+uint8_t current_index = 0;
+
+/* Last active index for each sub menu */
+uint8_t last_index[ARRAY_SIZE(all_menus)] = { 0 };
+/* Sequence of sub menus between current and _TOP, as a stack */
+MenuKeys menu_stack[ARRAY_SIZE(all_menus)] = {};
+int8_t menu_stack_top = -1; // empty
+
 static bool history_empty(void);
 static bool history_empty() {
-    return (menu_loc_stack_top == -1);
+    return (menu_stack_top == -1);
 }
 
-static void history_push(MenuLoc value);
-static void history_push(MenuLoc value) {
-    menu_loc_stack[++menu_loc_stack_top] = value;
+static void history_push(MenuKeys value);
+static void history_push(MenuKeys value) {
+    menu_stack[++menu_stack_top] = value;
     return;
 }
 
-static MenuLoc history_pop(void);
-static MenuLoc history_pop() {
+static MenuKeys history_pop(void);
+static MenuKeys history_pop() {
     if (!history_empty()) {
-        return menu_loc_stack[menu_loc_stack_top--];
+        return menu_stack[menu_stack_top--];
     } else {
         return current_menu;
     }
 }
 
 void menu_up() {
-    if (current_menu.idx > 0) {
-        --current_menu.idx;
+    if (current_index > 0) {
+        --current_index;
     }
-    // TODO how to wrap?
-    // no wrap: menu_loc = max(menu_start, menu_loc - 1)
-    // wrap: menu_loc += (idx - 1) % menu_length
     return;
 }
 
 void menu_down() {
-    if (all_menus[current_menu.menu][current_menu.idx+1].menuText != NULL) {
-        ++current_menu.idx;
+    if (all_menus[current_menu][current_index+1].menuText != NULL) {
+        ++current_index;
     }
     return;
 }
 
 // back
 void menu_left() {
+    // save old index
+    last_index[current_menu] = current_index;
+    // restore menu and index
     current_menu = history_pop();
+    current_index = last_index[current_menu];
     return;
 }
 
 // enter/forward/send
 bool menu_right(keyrecord_t* record) {
-    MenuData data = all_menus[current_menu.menu][current_menu.idx].menuData;
-    MenuType ty = all_menus[current_menu.menu][current_menu.idx].menuType;
+    MenuData data = all_menus[current_menu][current_index].menuData;
+    MenuType ty = all_menus[current_menu][current_index].menuType;
     switch (ty) {
     case MENU_SUB:
-        // push current (a copy)
         history_push(current_menu);
+        last_index[current_menu] = current_index;
         // go to menu in entry
-        current_menu.menu = data.subMenu;
-        current_menu.idx = 0;
+        current_menu = data.subMenu;
+        current_index = last_index[current_menu];
         return false;
     case MENU_KC:
         record->keycode = data.keycode;
@@ -236,20 +233,20 @@ bool menu_right(keyrecord_t* record) {
 
 // go back to start
 void menu_reset() {
-    current_menu.menu = _TOP;
-    current_menu.idx = 0;
-    menu_loc_stack_top = -1;
+    current_menu = _TOP;
+    current_index = 0;
+    menu_stack_top = -1;
     return;
 }
 
 #ifdef OLED_ENABLE
 void oled_print_menu() {
     oled_clear();
-    uprintf("menu=%d idx=%d", current_menu.menu, current_menu.idx);
+    uprintf("menu=%d idx=%d", current_menu, current_index);
     uint8_t i;
     MenuEntry e;
-    for (i = 0, e = get_entry(current_menu.menu, i); e.menuText != NULL; i++) {
-        oled_write_ln(e.menuText, i == current_menu.idx);
+    for (i = 0, e = get_entry(current_menu, i); e.menuText != NULL; i++) {
+        oled_write_ln(e.menuText, i == current_index);
     }
     return;
 }

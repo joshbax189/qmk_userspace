@@ -4,16 +4,12 @@
 
 typedef struct { uint16_t keycode; } keyrecord_t;
 
-#include "menu.h"
-
 #define RGBLED_ENABLE
 
-typedef struct {
-    MenuKeys menu;
-    uint8_t idx;
-} MenuLoc;
+#include "menu.h"
 
-extern MenuLoc current_menu;
+extern MenuKeys current_menu;
+extern uint8_t current_index;
 
 int main() {
     while (true) {
@@ -35,7 +31,8 @@ int main() {
             menu_right(&foo);
             break;
         }
-        printf("menu=%d idx=%d", current_menu.menu, current_menu.idx);
+        printf("menu=%d idx=%d\n", current_menu, current_index);
+        printf("%s\n", get_entry(current_menu, current_index).menuText);
     }
 
     return 0;
