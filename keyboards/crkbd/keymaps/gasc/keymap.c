@@ -20,14 +20,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../oled.c"
 
 // home row GASC
+// TODO could use enum keycode_aliases
 #define HR_A LGUI_T(KC_A)
-#define HR_S LALT_T(KC_S)
-#define HR_D LSFT_T(KC_D)
+#define HR_S LT(SYM, KC_S)
+#define HR_D LALT_T(KC_D)
 #define HR_F LCTL_T(KC_F)
 
 #define HR_J RCTL_T(KC_J)
-#define HR_K RSFT_T(KC_K)
-#define HR_L LALT_T(KC_L)
+#define HR_K RALT_T(KC_K)
+#define HR_L LT(SYM, KC_L)
 #define HR_SC RGUI_T(KC_SCLN)
 
 // super
@@ -75,14 +76,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                           _______, _______, _______,      _______, MO(FUN), QK_LLCK
                                       //`--------------------------'  `--------------------------'
   ),
-
+  // ShelZuuz
   [SYM] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      XXXXXXX, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_GRV,
+      XXXXXXX,  KC_GRV, KC_TILD, KC_HASH, KC_AMPR, KC_PIPE,                      KC_CIRC, KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_MINS,  KC_EQL, KC_LBRC, KC_RBRC, KC_BSLS, KC_QUOT,
+      XXXXXXX, KC_EXLM, KC_UNDS, KC_COLN,  KC_EQL,  KC_DLR,                        KC_AT, KC_LPRN, KC_RPRN, KC_UNDS, KC_BSLS, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
+      XXXXXXX, KC_PERC, KC_QUES, KC_ASTR, KC_PLUS, KC_BSLS,                      KC_SLSH, KC_MINS,   KC_LT,   KC_GT, KC_QUOT, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, MO(FUN), _______,    _______, _______, _______
                                       //`--------------------------'  `--------------------------'
@@ -98,6 +99,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______, _______, _______
                                       //`--------------------------'  `--------------------------'
-  )
+  ),
 };
 // clang-format on

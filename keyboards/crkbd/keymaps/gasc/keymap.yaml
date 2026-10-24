@@ -1,0 +1,174 @@
+layout: {qmk_keyboard: crkbd/rev1, layout_name: LAYOUT_split_3x6_3}
+layers:
+  L0:
+  - TAB
+  - Q
+  - W
+  - E
+  - R
+  - T
+  - Y
+  - U
+  - I
+  - O
+  - P
+  - ESC
+  - LCTL
+  - HR A
+  - HR S
+  - HR D
+  - HR F
+  - G
+  - H
+  - HR J
+  - HR K
+  - HR L
+  - HR SC
+  - LT(NUM,ENT)
+  - LSFT
+  - Z
+  - X
+  - C
+  - V
+  - B
+  - N
+  - M
+  - ','
+  - .
+  - ''''
+  - RSFT
+  - OS LGUI
+  - LALT
+  - SPC
+  - BSPC
+  - MO(SYM)
+  - {t: DEL, h: RALT}
+  L1:
+  - ''
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - ''
+  - ''
+  - PGUP
+  - UP
+  - HOME
+  - ''
+  - ''
+  - '6'
+  - '7'
+  - '8'
+  - '9'
+  - '0'
+  - ''
+  - ''
+  - LEFT
+  - DOWN
+  - RIGHT
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - PGDN
+  - ''
+  - END
+  - ''
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - MO(FUN)
+  - QK LLCK
+  L2:
+  - ''
+  - '`'
+  - '~'
+  - '#'
+  - '&'
+  - '|'
+  - ^
+  - '{'
+  - '}'
+  - '['
+  - ']'
+  - ''
+  - ''
+  - '!'
+  - _
+  - ;
+  - '='
+  - $
+  - '@'
+  - (
+  - )
+  - _
+  - \
+  - ''
+  - ''
+  - '%'
+  - '?'
+  - '*'
+  - +
+  - \
+  - /
+  - '-'
+  - '{'
+  - <
+  - '>'
+  - ''
+  - {t: ▽, type: trans}
+  - MO(FUN)
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  L3:
+  - QK BOOT
+  - F1
+  - F2
+  - F3
+  - F4
+  - F5
+  - F6
+  - F7
+  - F8
+  - F9
+  - F10
+  - F11
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - F12
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
