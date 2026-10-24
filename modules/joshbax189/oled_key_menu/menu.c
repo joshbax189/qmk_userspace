@@ -246,7 +246,7 @@ void oled_print_menu() {
     uprintf("menu=%d idx=%d", current_menu, current_index);
     uint8_t i;
     MenuEntry e;
-    for (i = 0, e = get_entry(current_menu, i); e.menuText != NULL; i++) {
+    for (i = 0, e = get_entry(current_menu, i); e.menuText != NULL; i++, e = get_entry(current_menu, i)) {
         oled_write_ln(e.menuText, i == current_index);
     }
     return;
