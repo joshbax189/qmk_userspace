@@ -50,18 +50,6 @@ enum layers {
     FUN,
 };
 
-// Tap Dance declarations
-enum {
-    TD_MX,
-    TD_CC, //TODO this breaks C-c C-c functions
-};
-
-// Tap Dance definitions
-tap_dance_action_t tap_dance_actions[] = {
-    [TD_MX] = ACTION_TAP_DANCE_DOUBLE(KC_X, LALT(KC_X)),
-    [TD_CC] = ACTION_TAP_DANCE_DOUBLE(KC_C, LCTL(KC_C)),
-};
-
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [BASE] = LAYOUT_split_3x6_3(
@@ -70,7 +58,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LCTL,    HR_A,    HR_S,    HR_D,    HR_F,    KC_G,                        KC_H,    HR_J,    HR_K,    HR_L,   HR_SC, LT(NUM, KC_ENT),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT,    KC_Z, TD(TD_MX), TD(TD_CC), KC_V,   KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT,
+      KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_QUOT, KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                  OS_LGUI,  KC_LALT, KC_SPC,     KC_BSPC, MO(SYM), RALT_T(KC_DEL)
                               //`--------------------------'  `--------------------------'
