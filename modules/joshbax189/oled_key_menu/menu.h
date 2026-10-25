@@ -17,7 +17,7 @@ typedef struct Menu Menu;
 struct Menu {
     MenuEntry* entries;
     uint8_t index;
-    Menu* lastMenu; // linked list path to current menu
+    Menu* parent; // linked list path to current menu
 };
 
 union MenuData {

@@ -27,7 +27,12 @@ void process_record_quantum(keyrecord_t* x) {
 // use as a delimiter in menus -- avoid storing menu size
 const MenuEntry MENU_END = { NULL, MENU_SUB, { 0 } };
 
-#define MAKE_MENU(name, ...) MenuEntry name ## _entries[] = { __VA_ARGS__ MENU_END }; Menu name = { .entries = name ## _entries, .index = 0, .lastMenu = NULL }
+void my_test(keyrecord_t* foo) {
+    printf("hello world!");
+    return;
+}
+
+#define MAKE_MENU(name, ...) MenuEntry name ## _entries[] = { __VA_ARGS__ MENU_END }; Menu name = { .entries = name ## _entries, .index = 0, .parent = NULL }
 
 #define TOP_MENU(...) MAKE_MENU(top_menu, __VA_ARGS__)
 
@@ -158,8 +163,8 @@ void menu_down() {
 // back
 void menu_left() {
     /* dprintf("left"); */
-    if (current_menu->lastMenu != NULL) {
-        current_menu = current_menu->lastMenu;
+    if (current_menu->parent != NULL) {
+        current_menu = current_menu->parent;
     }
     return;
 }
@@ -174,7 +179,7 @@ bool menu_right(keyrecord_t* record) {
         Menu* last = current_menu;
         // go to menu in entry
         current_menu = data.subMenu;
-        current_menu->lastMenu = last;
+        current_menu->parent = last;
         return false;
     case MENU_KC:
         record->keycode = data.keycode;
