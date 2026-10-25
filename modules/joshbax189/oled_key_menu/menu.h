@@ -3,19 +3,6 @@
 
 #include QMK_KEYBOARD_H
 
-/* Entries in the menu matrix */
-typedef enum {
-    _TOP,
-    _RGB,
-    _UG,
-    _BOOT,
-    _MAGIC,
-    _SWAP,
-    _NKRO,
-    _GUI,
-    _SPLIT,
-} MenuKeys;
-
 /* The action this menu will produce */
 typedef enum {
     MENU_SUB, // data is another menu
@@ -25,10 +12,17 @@ typedef enum {
 
 typedef struct MenuEntry MenuEntry;
 typedef union MenuData MenuData;
+typedef struct Menu Menu;
+
+struct Menu {
+    MenuEntry* entries;
+    uint8_t index;
+    Menu* lastMenu; // linked list path to current menu
+};
 
 union MenuData {
     uint16_t keycode;
-    MenuKeys subMenu;
+    Menu* subMenu;
     void (*menuFn)(keyrecord_t*);
 };
 
@@ -43,6 +37,6 @@ void menu_down(void);
 void menu_left(void);
 bool menu_right(keyrecord_t*);
 void menu_reset(void);
-MenuEntry get_entry(MenuKeys, uint8_t);
+MenuEntry get_entry(Menu*, uint8_t);
 
 void oled_print_menu(void);

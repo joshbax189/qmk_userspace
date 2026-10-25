@@ -19,55 +19,50 @@ void process_record_quantum(keyrecord_t* x) {
 
 #include "menu.h"
 
+// macros
+# define SUB_MENU(name) MENU_SUB, { .subMenu = &name }
+# define FUNC_ACTION(name) MENU_FN, { .menuFn = &name }
+# define KEY_ACTION(name) MENU_KC, { .keycode = name }
+
 // use as a delimiter in menus -- avoid storing menu size
 const MenuEntry MENU_END = { NULL, MENU_SUB, { 0 } };
 
-MenuEntry top_menu[] = {
-#ifdef RGB_MATRIX_ENABLE
-    { "RGB", MENU_SUB, { .subMenu = _RGB }},
-#endif
-#ifdef RGBLIGHT_ENABLE
-    { "UG", MENU_SUB,  { .subMenu = _UG }},
-#endif
-    { "BOOT", MENU_SUB, { .subMenu = _BOOT }},
-    { "MAGIC", MENU_SUB, { .subMenu = _MAGIC }},
-    MENU_END,
-};
+#define MAKE_MENU(name, ...) MenuEntry name ## _entries[] = { __VA_ARGS__ MENU_END }; Menu name = { .entries = name ## _entries, .index = 0, .lastMenu = NULL }
+
+#define TOP_MENU(...) MAKE_MENU(top_menu, __VA_ARGS__)
 
 #ifdef RGB_MATRIX_ENABLE
-MenuEntry rgb_menu[] = {
-    // TODO only togg works -- but all work for UG?
-    { "SAT+", MENU_KC, { .keycode = RM_SATU } },
-    { "SAT-", MENU_KC, { .keycode = RM_SATD } },
-    { "NEXT", MENU_KC, { .keycode = RM_NEXT } },
-    { "PREV", MENU_KC, { .keycode = UG_PREV } },
-    { "TOGG", MENU_KC, { .keycode = UG_TOGG } },
-    { "HUE+", MENU_KC, { .keycode = RM_HUEU } },
-    { "HUE-", MENU_KC, { .keycode = RM_HUED } },
-    MENU_END
-};
+// TODO only togg works -- but all work for UG?
+MAKE_MENU(rgb_menu,
+    { "SAT+", KEY_ACTION(RM_SATU) },
+    { "SAT-", KEY_ACTION(RM_SATD) },
+    { "NEXT", KEY_ACTION(RM_NEXT) },
+    { "PREV", KEY_ACTION(UG_PREV) },
+    { "TOGG", KEY_ACTION(UG_TOGG) },
+    { "HUE+", KEY_ACTION(RM_HUEU) },
+    { "HUE-", KEY_ACTION(RM_HUED) },
+);
 #endif
 
 #ifdef RGBLIGHT_ENABLE
-MenuEntry ug_menu[] = {
-    { "TOGG", MENU_KC, { .keycode = UG_TOGG } },
-    { "NEXT", MENU_KC, { .keycode = UG_NEXT } },
-    { "PREV", MENU_KC, { .keycode = UG_PREV } },
-    { "HUE+", MENU_KC, { .keycode = UG_HUEU } },
-    { "HUE-", MENU_KC, { .keycode = UG_HUED } },
-    { "SAT+", MENU_KC, { .keycode = UG_SATU } },
-    { "SAT-", MENU_KC, { .keycode = UG_SATD } },
-    { "VAL+", MENU_KC, { .keycode = UG_VALU } },
-    { "VAL-", MENU_KC, { .keycode = UG_VALD } },
-    MENU_END
-};
+MAKE_MENU(ug_menu,
+    { "TOGG", KEY_ACTION(UG_TOGG) },
+    { "NEXT", KEY_ACTION(UG_NEXT) },
+    { "PREV", KEY_ACTION(UG_PREV) },
+    { "HUE+", KEY_ACTION(UG_HUEU) },
+    { "HUE-", KEY_ACTION(UG_HUED) },
+    { "SAT+", KEY_ACTION(UG_SATU) },
+    { "SAT-", KEY_ACTION(UG_SATD) },
+    { "VAL+", KEY_ACTION(UG_VALU) },
+    { "VAL-", KEY_ACTION(UG_VALD) },
+);
 #endif
 
-MenuEntry boot_menu[] = {
-    { "RESET", MENU_KC, { .keycode = QK_RBT } },
-    { "BOOT", MENU_KC, { .keycode = QK_BOOT } }, // TODO doesn't work
-    MENU_END
-};
+// TODO QK_BOOT doesn't work
+MAKE_MENU(boot_menu,
+     { "RESET", KEY_ACTION(QK_RBT) },
+     { "BOOT", KEY_ACTION(QK_BOOT) },
+);
 
 // TODO other magic codes
 /* { "CL_SWAP", MENU_KC, { .keycode = CL_SWAP } }, */
@@ -93,133 +88,93 @@ MenuEntry boot_menu[] = {
 /* { "BS_SWAP", MENU_KC, { .keycode = BS_SWAP } }, */
 /* { "BS_NORM", MENU_KC, { .keycode = BS_NORM } }, */
 
-MenuEntry magic_menu[] = {
-    { "NKRO", MENU_SUB, { .subMenu = _NKRO }},
-    { "SWAP", MENU_SUB, { .subMenu = _SWAP }},
-    { "GKEYS", MENU_SUB, { .subMenu = _GUI }},
-    { "SPLIT", MENU_SUB, { .subMenu = _SPLIT }},
-    MENU_END
-};
+MAKE_MENU(swap_menu,
+     { "CL", KEY_ACTION(CL_TOGG) },
+     { "EC", KEY_ACTION(EC_TOGG) },
+     { "CG", KEY_ACTION(CG_TOGG) },
+     // Alt/GUI both sides
+     { "AG", KEY_ACTION(AG_TOGG) },
+     // \/Bspc
+     { "BS", KEY_ACTION(BS_TOGG) },
+);
 
-MenuEntry swap_menu[] = {
-    // Caps/LCtrl
-    { "CL", MENU_KC, { .keycode = CL_TOGG } },
-    // Esc/Caps
-    { "EC", MENU_KC, { .keycode = EC_TOGG } },
-    // Ctrl/GUI both sides
-    { "CG", MENU_KC, { .keycode = CG_TOGG } },
-    // Alt/GUI both sides
-    { "AG", MENU_KC, { .keycode = AG_TOGG } },
-    // \/Bspc
-    { "BS", MENU_KC, { .keycode = BS_TOGG } },
-    MENU_END
-};
+MAKE_MENU(nkro_menu,
+     { "ON", KEY_ACTION(NK_ON)},
+     { "OFF", KEY_ACTION(NK_OFF) },
+     { "TOGG", KEY_ACTION(NK_TOGG) },
+);
 
-MenuEntry nkro_menu[] = {
-    { "ON"  , MENU_KC, { .keycode = NK_ON } },
-    { "OFF" , MENU_KC, { .keycode = NK_OFF } },
-    { "TOGG", MENU_KC, { .keycode = NK_TOGG } },
-    MENU_END
-};
+MAKE_MENU(split_menu,
+     { "EH_LEFT", KEY_ACTION(EH_LEFT)},
+     { "EH_RGHT", KEY_ACTION(EH_RGHT)},
+);
 
-MenuEntry split_menu[] = {
-    { "EH_LEFT", MENU_KC, { .keycode = EH_LEFT } },
-    { "EH_RGHT", MENU_KC, { .keycode = EH_RGHT } },
-    MENU_END
-};
+MAKE_MENU(gui_menu,
+    { "GU_OFF" , KEY_ACTION(GU_OFF) },
+    { "GU_ON"  , KEY_ACTION(GU_ON) },
+    { "GU_TOGG", KEY_ACTION(GU_TOGG) },
+);
 
-MenuEntry gui_menu[] = {
-    { "GU_OFF" , MENU_KC, { .keycode = GU_OFF } },
-    { "GU_ON"  , MENU_KC, { .keycode = GU_ON } },
-    { "GU_TOGG", MENU_KC, { .keycode = GU_TOGG } },
-    MENU_END
-};
+MAKE_MENU(magic_menu,
+     { "NKRO", SUB_MENU(nkro_menu) },
+     { "SWAP", SUB_MENU(swap_menu) },
+     { "GKEYS", SUB_MENU(gui_menu) },
+     { "SPLIT", SUB_MENU(split_menu) },
+);
 
-/* indexes available menus using MenuKey */
-MenuEntry* all_menus[] = {
-    [_TOP] = top_menu,
-    #ifdef RGB_MATRIX_ENABLE
-    [_RGB] = rgb_menu,
-    #endif
-    #ifdef RGBLIGHT_ENABLE
-    [_UG] = ug_menu,
-    #endif
-    [_BOOT] = boot_menu,
-    [_MAGIC] = magic_menu,
-    [_SWAP] = swap_menu,
-    [_NKRO] = nkro_menu,
-    [_SPLIT] = split_menu,
-    [_GUI] = gui_menu,
-};
+TOP_MENU(
+#ifdef RGB_MATRIX_ENABLE
+    { "RGB", SUB_MENU(rgb_menu) },
+#endif
+#ifdef RGBLIGHT_ENABLE
+    { "UG", SUB_MENU(ug_menu) },
+#endif
+    { "BOOT", SUB_MENU(boot_menu)},
+    { "MAGIC", SUB_MENU(magic_menu) },
+);
 
-MenuEntry get_entry(MenuKeys sub, uint8_t idx) {
-    return all_menus[sub][idx];
+MenuEntry get_entry(Menu* sub, uint8_t idx) {
+    return sub->entries[idx];
 }
 
-MenuKeys current_menu = _TOP;
-uint8_t current_index = 0;
-
-/* Last active index for each sub menu */
-uint8_t last_index[ARRAY_SIZE(all_menus)] = { 0 };
-/* Sequence of sub menus between current and _TOP, as a stack */
-MenuKeys menu_stack[ARRAY_SIZE(all_menus)] = {};
-int8_t menu_stack_top = -1; // empty
-
-static bool history_empty(void);
-static bool history_empty() {
-    return (menu_stack_top == -1);
-}
-
-static void history_push(MenuKeys value);
-static void history_push(MenuKeys value) {
-    menu_stack[++menu_stack_top] = value;
-    return;
-}
-
-static MenuKeys history_pop(void);
-static MenuKeys history_pop() {
-    if (!history_empty()) {
-        return menu_stack[menu_stack_top--];
-    } else {
-        return current_menu;
-    }
-}
+Menu* current_menu = &top_menu;
 
 void menu_up() {
-    if (current_index > 0) {
-        --current_index;
+    /* dprintf("up"); */
+    if (current_menu->index > 0) {
+        --current_menu->index;
     }
     return;
 }
 
 void menu_down() {
-    if (all_menus[current_menu][current_index+1].menuText != NULL) {
-        ++current_index;
+    /* dprintf("down"); */
+    if (get_entry(current_menu, (current_menu->index)+1).menuText != NULL) {
+        ++current_menu->index;
     }
     return;
 }
 
 // back
 void menu_left() {
-    // save old index
-    last_index[current_menu] = current_index;
-    // restore menu and index
-    current_menu = history_pop();
-    current_index = last_index[current_menu];
+    /* dprintf("left"); */
+    if (current_menu->lastMenu != NULL) {
+        current_menu = current_menu->lastMenu;
+    }
     return;
 }
 
 // enter/forward/send
 bool menu_right(keyrecord_t* record) {
-    MenuData data = all_menus[current_menu][current_index].menuData;
-    MenuType ty = all_menus[current_menu][current_index].menuType;
+    /* dprintf("right"); */
+    MenuData data = get_entry(current_menu, current_menu->index).menuData;
+    MenuType ty = get_entry(current_menu, current_menu->index).menuType;
     switch (ty) {
     case MENU_SUB:
-        history_push(current_menu);
-        last_index[current_menu] = current_index;
+        Menu* last = current_menu;
         // go to menu in entry
         current_menu = data.subMenu;
-        current_index = last_index[current_menu];
+        current_menu->lastMenu = last;
         return false;
     case MENU_KC:
         record->keycode = data.keycode;
@@ -234,20 +189,18 @@ bool menu_right(keyrecord_t* record) {
 
 // go back to start
 void menu_reset() {
-    current_menu = _TOP;
-    current_index = 0;
-    menu_stack_top = -1;
+    current_menu = &top_menu;
     return;
 }
 
 #ifdef OLED_ENABLE
 void oled_print_menu() {
     oled_clear();
-    uprintf("menu=%d idx=%d", current_menu, current_index);
+    /* uprintf("menu=%d idx=%d\n", current_menu, current_index); */
     uint8_t i;
     MenuEntry e;
     for (i = 0, e = get_entry(current_menu, i); e.menuText != NULL; i++, e = get_entry(current_menu, i)) {
-        oled_write_ln(e.menuText, i == current_index);
+        oled_write_ln(e.menuText, i == current_menu->index);
     }
     return;
 }

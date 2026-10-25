@@ -8,8 +8,7 @@ typedef struct { uint16_t keycode; } keyrecord_t;
 
 #include "menu.h"
 
-extern MenuKeys current_menu;
-extern uint8_t current_index;
+extern Menu* current_menu;
 
 int main() {
     while (true) {
@@ -31,8 +30,8 @@ int main() {
             menu_right(&foo);
             break;
         }
-        printf("menu=%d idx=%d\n", current_menu, current_index);
-        printf("%s\n", get_entry(current_menu, current_index).menuText);
+        printf("menu=%d idx=%d\n", current_menu, current_menu->index);
+        printf("%s\n", get_entry(current_menu, current_menu->index).menuText);
     }
 
     return 0;
