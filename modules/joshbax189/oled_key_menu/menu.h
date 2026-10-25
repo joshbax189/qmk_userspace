@@ -9,26 +9,24 @@ typedef enum {
     MENU_FN,  // data is a function
 } menu_action_t;
 
-typedef struct menu_entry_t menu_entry_t;
-typedef union menu_data_t menu_data_t;
 typedef struct menu_t menu_t;
+
+typedef union {
+    uint16_t keycode;
+    menu_t* subMenu;
+    void (*menuFn)(keyrecord_t*);
+} menu_data_t;
+
+typedef struct {
+    char* menuText;
+    menu_action_t menuType;
+    menu_data_t menuData; // either a pointer or a keycode
+} menu_entry_t;
 
 struct menu_t {
     menu_entry_t* entries;
     uint8_t index;
     menu_t* parent; // linked list path to current menu
-};
-
-union menu_data_t {
-    uint16_t keycode;
-    menu_t* subMenu;
-    void (*menuFn)(keyrecord_t*);
-};
-
-struct menu_entry_t {
-    char* menuText;
-    menu_action_t menuType;
-    menu_data_t menuData; // either a pointer or a keycode
 };
 
 void menu_up(void);
