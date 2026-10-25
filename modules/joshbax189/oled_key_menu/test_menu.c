@@ -8,7 +8,7 @@ typedef struct { uint16_t keycode; } keyrecord_t;
 
 #include "menu.h"
 
-extern Menu* current_menu;
+extern menu_t* current_menu;
 
 int main() {
     while (true) {

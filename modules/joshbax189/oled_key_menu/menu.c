@@ -25,14 +25,14 @@ void process_record_quantum(keyrecord_t* x) {
 # define KEY_ACTION(name) MENU_KC, { .keycode = name }
 
 // use as a delimiter in menus -- avoid storing menu size
-const MenuEntry MENU_END = { NULL, MENU_SUB, { 0 } };
+const menu_entry_t MENU_END = { NULL, MENU_SUB, { 0 } };
 
 void my_test(keyrecord_t* foo) {
     printf("hello world!");
     return;
 }
 
-#define MAKE_MENU(name, ...) MenuEntry name ## _entries[] = { __VA_ARGS__ MENU_END }; Menu name = { .entries = name ## _entries, .index = 0, .parent = NULL }
+#define MAKE_MENU(name, ...) menu_entry_t name ## _entries[] = { __VA_ARGS__ MENU_END }; menu_t name = { .entries = name ## _entries, .index = 0, .parent = NULL }
 
 #define TOP_MENU(...) MAKE_MENU(top_menu, __VA_ARGS__)
 
@@ -138,11 +138,11 @@ TOP_MENU(
     { "MAGIC", SUB_MENU(magic_menu) },
 );
 
-MenuEntry get_entry(Menu* sub, uint8_t idx) {
+menu_entry_t get_entry(menu_t* sub, uint8_t idx) {
     return sub->entries[idx];
 }
 
-Menu* current_menu = &top_menu;
+menu_t* current_menu = &top_menu;
 
 void menu_up() {
     /* dprintf("up"); */
@@ -172,11 +172,11 @@ void menu_left() {
 // enter/forward/send
 bool menu_right(keyrecord_t* record) {
     /* dprintf("right"); */
-    MenuData data = get_entry(current_menu, current_menu->index).menuData;
-    MenuType ty = get_entry(current_menu, current_menu->index).menuType;
+    menu_data_t data = get_entry(current_menu, current_menu->index).menuData;
+    menu_action_t ty = get_entry(current_menu, current_menu->index).menuType;
     switch (ty) {
     case MENU_SUB:
-        Menu* last = current_menu;
+        menu_t* last = current_menu;
         // go to menu in entry
         current_menu = data.subMenu;
         current_menu->parent = last;
@@ -203,7 +203,7 @@ void oled_print_menu() {
     oled_clear();
     /* uprintf("menu=%d idx=%d\n", current_menu, current_index); */
     uint8_t i;
-    MenuEntry e;
+    menu_entry_t e;
     for (i = 0, e = get_entry(current_menu, i); e.menuText != NULL; i++, e = get_entry(current_menu, i)) {
         oled_write_ln(e.menuText, i == current_menu->index);
     }

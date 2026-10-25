@@ -3,33 +3,32 @@
 
 #include QMK_KEYBOARD_H
 
-/* The action this menu will produce */
 typedef enum {
     MENU_SUB, // data is another menu
     MENU_KC,  // data is a keycode
     MENU_FN,  // data is a function
-} MenuType;
+} menu_action_t;
 
-typedef struct MenuEntry MenuEntry;
-typedef union MenuData MenuData;
-typedef struct Menu Menu;
+typedef struct menu_entry_t menu_entry_t;
+typedef union menu_data_t menu_data_t;
+typedef struct menu_t menu_t;
 
-struct Menu {
-    MenuEntry* entries;
+struct menu_t {
+    menu_entry_t* entries;
     uint8_t index;
-    Menu* parent; // linked list path to current menu
+    menu_t* parent; // linked list path to current menu
 };
 
-union MenuData {
+union menu_data_t {
     uint16_t keycode;
-    Menu* subMenu;
+    menu_t* subMenu;
     void (*menuFn)(keyrecord_t*);
 };
 
-struct MenuEntry {
+struct menu_entry_t {
     char* menuText;
-    MenuType menuType;
-    MenuData menuData; // either a pointer or a keycode
+    menu_action_t menuType;
+    menu_data_t menuData; // either a pointer or a keycode
 };
 
 void menu_up(void);
@@ -37,6 +36,6 @@ void menu_down(void);
 void menu_left(void);
 bool menu_right(keyrecord_t*);
 void menu_reset(void);
-MenuEntry get_entry(Menu*, uint8_t);
+menu_entry_t get_entry(menu_t*, uint8_t);
 
 void oled_print_menu(void);
