@@ -6,21 +6,101 @@ A menu for OLED displays that exposes keycodes without needing to add them to a 
 
 1. import module
    - check out submodule to qmk_userspace/modules
-   - add joshbax189/oled_key_menu to keymap.json
-2. define a layer for menu keys, bind those keys
-   - example
+   - add joshbax189/oled_key_menu to =keymap.json=
+2. define a layer for menu keys, bind at least =MENU_UP=, =MENU_DOWN=, =MENU_LEFT=, =MENU_RIGHT=,
+   - TODO example
 3. in oled handler: add render function when layer is active
-   - example
+#+begin_src C
+bool oled_task_user(void) {
+  if (get_highest_layer(layer_state) == _MENU) {
+    oled_print_menu();
+  } else {
+    // normal display code here...
+  }
+  return true;
+}
+#+end_src
+
+*** TODO describe MENU_RESET key
 
 ** Configuration
 
-*** remove a visible menu
+Macros are provided to write your own menus. For example:
 
-*** remove or change an entry in a menu
+#+begin_src C
+// This menu dispatches key codes
+MAKE_MENU(gui_menu,
+    { "GU_OFF" , KEY_ACTION(GU_OFF) },
+    { "GU_ON"  , KEY_ACTION(GU_ON) },
+    { "GU_TOGG", KEY_ACTION(GU_TOGG) },
+);
 
-*** reorder menus
+// This menu defines child menus
+MAKE_MENU(magic_menu,
+     { "NKRO", SUB_MENU(nkro_menu) },
+     { "SWAP", SUB_MENU(swap_menu) },
+     { "GKEYS", SUB_MENU(gui_menu) },
+     { "SPLIT", SUB_MENU(split_menu) },
+);
 
-*** adding a menu
+// This is the entry point -- it must be defined AFTER the sub menus.
+// Notice it does not accept a name argument.
+TOP_MENU(
+#ifdef RGB_MATRIX_ENABLE
+    { "RGB", SUB_MENU(rgb_menu) },
+#endif
+#ifdef RGBLIGHT_ENABLE
+    { "UG", SUB_MENU(ug_menu) },
+#endif
+    { "BOOT", SUB_MENU(boot_menu)},
+    { "MAGIC", SUB_MENU(magic_menu) },
+);
+#+end_src
+
+You can also reorder existing menus by referring to their names. For example
+#+begin_src C
+MAKE_MENU(magic_menu,
+     // reorder these ones
+     { "SWAP", SUB_MENU(swap_menu) },
+     { "NKRO", SUB_MENU(nkro_menu) },
+     // remove these ones
+     /* { "GKEYS", SUB_MENU(gui_menu) }, */
+     /* { "SPLIT", SUB_MENU(split_menu) }, */
+);
+#+end_src
+
+These are the built-in sub-menus:
+
+| Name         | Description                             | Switch              |
+|--------------+-----------------------------------------+---------------------|
+| =rgb_menu=   | RGB matrix feature                      | =RGB_MATRIX_ENABLE= |
+| =ug_menu=    | RGB underglow feature                   | =RGBLIGHT_ENABLE=   |
+| =boot_menu=  | QMK boot keys                           |                     |
+| =swap_menu=  | Magic keycodes for swap hands           |                     |
+| =nkro_menu=  | Magic keycodes for NKRO                 |                     |
+| =split_menu= | Magic keycodes for Split EEProm setting |                     |
+| =gui_menu=   | Magic keycodes to control GUI keys      |                     |
+| =magic_menu= | Sub menu with above magic keycodes      |                     |
+
+*** TODO Calling Functions
+
+You can also configure menu items to call functions:
+#+begin_src C
+void my_neat_function(keyrecord_t* record) {
+  print("Cool!\n");
+  return;
+}
+
+MAKE_MENU(my_menu,
+     { "CALL", FUNC_ACTION(my_neat_function) }
+);
+#+end_src
+
+Note that the function must take =keyrecord_t* record= as an argument.
+This means some QMK functions must be wrapped in a new function.
+
+- TODO example of the above
+- TODO check that the example works
 
 ** Tasks
 *** TODO make a community module
