@@ -1,22 +1,3 @@
-/* #define MENU_TEST */
-
-#ifdef MENU_TEST
-#include <stdint.h>
-#include <stddef.h>
-
-typedef struct { uint16_t keycode; } keyrecord_t;
-
-enum keycodes { QK_RBT, QK_BOOT, UG_TOGG, UG_NEXT, UG_PREV, CL_TOGG, EC_TOGG, CG_TOGG, AG_TOGG, BS_TOGG, NK_ON, NK_OFF, NK_TOGG, EH_LEFT, EH_RGHT, GU_OFF, GU_ON, GU_TOGG };
-
-void process_record_quantum(keyrecord_t* x) {
-    return;
-}
-
-#else
-#include QMK_KEYBOARD_H
-#include "print.h"
-#endif
-
 #include "menu.h"
 
 // macros
@@ -170,6 +151,7 @@ void menu_left() {
 }
 
 // enter/forward/send
+// TODO may not need to return bool here
 bool menu_right(keyrecord_t* record) {
     /* dprintf("right"); */
     menu_data_t data = get_entry(current_menu, current_menu->index).data;

@@ -1,14 +1,13 @@
-#include <stdio.h>
-#include <stdint.h>
-#include <stddef.h>
-
-typedef struct { uint16_t keycode; } keyrecord_t;
-
-#define RGBLED_ENABLE
+// compile with -D QMK_KEYBOARD_H='"test_menu.h"'
 
 #include "menu.h"
 
 extern menu_t* current_menu;
+
+// stub
+void process_record_quantum(keyrecord_t* x) {
+    return;
+}
 
 int main() {
     while (true) {
