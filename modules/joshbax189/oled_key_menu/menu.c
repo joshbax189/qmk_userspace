@@ -20,8 +20,8 @@ void process_record_quantum(keyrecord_t* x) {
 #include "menu.h"
 
 // macros
-# define SUB_MENU(name) MENU_SUB, { .subMenu = &name }
-# define FUNC_ACTION(name) MENU_FN, { .menuFn = &name }
+# define SUB_MENU(name) MENU_SUB, { .sub_menu = &name }
+# define FUNC_ACTION(name) MENU_FN, { .callback = &name }
 # define KEY_ACTION(name) MENU_KC, { .keycode = name }
 
 // use as a delimiter in menus -- avoid storing menu size
@@ -154,7 +154,7 @@ void menu_up() {
 
 void menu_down() {
     /* dprintf("down"); */
-    if (get_entry(current_menu, (current_menu->index)+1).menuText != NULL) {
+    if (get_entry(current_menu, (current_menu->index)+1).text != NULL) {
         ++current_menu->index;
     }
     return;
@@ -172,13 +172,13 @@ void menu_left() {
 // enter/forward/send
 bool menu_right(keyrecord_t* record) {
     /* dprintf("right"); */
-    menu_data_t data = get_entry(current_menu, current_menu->index).menuData;
-    menu_action_t ty = get_entry(current_menu, current_menu->index).menuType;
+    menu_data_t data = get_entry(current_menu, current_menu->index).data;
+    menu_action_t ty = get_entry(current_menu, current_menu->index).action_type;
     switch (ty) {
     case MENU_SUB:
         menu_t* last = current_menu;
         // go to menu in entry
-        current_menu = data.subMenu;
+        current_menu = data.sub_menu;
         current_menu->parent = last;
         return false;
     case MENU_KC:
@@ -186,7 +186,7 @@ bool menu_right(keyrecord_t* record) {
         process_record_quantum(record);
         return true;
     case MENU_FN:
-        data.menuFn(record);
+        data.callback(record);
         return true;
     }
     return false;
@@ -204,8 +204,8 @@ void oled_print_menu() {
     /* uprintf("menu=%d idx=%d\n", current_menu, current_index); */
     uint8_t i;
     menu_entry_t e;
-    for (i = 0, e = get_entry(current_menu, i); e.menuText != NULL; i++, e = get_entry(current_menu, i)) {
-        oled_write_ln(e.menuText, i == current_menu->index);
+    for (i = 0, e = get_entry(current_menu, i); e.text != NULL; i++, e = get_entry(current_menu, i)) {
+        oled_write_ln(e.text, i == current_menu->index);
     }
     return;
 }

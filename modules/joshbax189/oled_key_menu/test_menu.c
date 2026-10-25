@@ -31,7 +31,7 @@ int main() {
             break;
         }
         printf("menu=%d idx=%d\n", current_menu, current_menu->index);
-        printf("%s\n", get_entry(current_menu, current_menu->index).menuText);
+        printf("%s\n", get_entry(current_menu, current_menu->index).text);
     }
 
     return 0;

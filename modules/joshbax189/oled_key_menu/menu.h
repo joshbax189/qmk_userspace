@@ -13,20 +13,23 @@ typedef struct menu_t menu_t;
 
 typedef union {
     uint16_t keycode;
-    menu_t* subMenu;
-    void (*menuFn)(keyrecord_t*);
+    menu_t* sub_menu;
+    void (*callback)(keyrecord_t*);
 } menu_data_t;
 
+/* A single displayed line in a menu */
 typedef struct {
-    char* menuText;
-    menu_action_t menuType;
-    menu_data_t menuData; // either a pointer or a keycode
+    char* text;
+    menu_action_t action_type;
+    menu_data_t data;
 } menu_entry_t;
 
+/* A submenu together with its state */
 struct menu_t {
     menu_entry_t* entries;
     uint8_t index;
-    menu_t* parent; // linked list path to current menu
+    /* Forms a linked list back to top_menu, whose parent is NULL */
+    menu_t* parent;
 };
 
 void menu_up(void);
