@@ -39,7 +39,7 @@ bool menu_right(keyrecord_t*);
 void menu_reset(void);
 menu_entry_t menu_get_entry(uint8_t);
 
-void oled_print_menu(void);
+void menu_render_oled(void);
 
 /* Menu Delimiter */
 #define MENU_END { NULL, MENU_SUB, { 0 }}

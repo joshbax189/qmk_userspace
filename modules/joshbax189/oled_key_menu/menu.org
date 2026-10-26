@@ -13,7 +13,7 @@ A menu for OLED displays that exposes keycodes without needing to add them to a 
 #+begin_src C
 bool oled_task_user(void) {
   if (get_highest_layer(layer_state) == _MENU) {
-    oled_print_menu();
+    menu_render_oled();
   } else {
     // normal display code here...
   }

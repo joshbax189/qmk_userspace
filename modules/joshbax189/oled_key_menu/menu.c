@@ -164,7 +164,7 @@ void menu_reset() {
 }
 
 #ifdef OLED_ENABLE
-void oled_print_menu() {
+void menu_render_oled() {
     oled_clear();
     /* uprintf("menu=%d idx=%d\n", current_menu, current_index); */
     uint8_t i;
