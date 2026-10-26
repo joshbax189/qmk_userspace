@@ -25,49 +25,11 @@ bool oled_task_user(void) {
 
 ** Configuration
 
-Macros are provided to write your own menus. For example:
+The default menu includes options for features like RGB Matrix, Underglow or Magic Keys which are enabled with the corresponding features.
 
-#+begin_src C
-// This menu dispatches key codes
-MAKE_MENU(gui_menu,
-    { "GU_OFF" , KEY_ACTION(GU_OFF) },
-    { "GU_ON"  , KEY_ACTION(GU_ON) },
-    { "GU_TOGG", KEY_ACTION(GU_TOGG) },
-);
+You can customize the menus either individually or by rewriting the entire menu structure.
 
-// This menu defines child menus
-MAKE_MENU(magic_menu,
-     { "NKRO", SUB_MENU(nkro_menu) },
-     { "SWAP", SUB_MENU(swap_menu) },
-     { "GKEYS", SUB_MENU(gui_menu) },
-     { "SPLIT", SUB_MENU(split_menu) },
-);
-
-// This is the entry point -- it must be defined AFTER the sub menus.
-// Notice it does not accept a name argument.
-TOP_MENU(
-#ifdef RGB_MATRIX_ENABLE
-    { "RGB", SUB_MENU(rgb_menu) },
-#endif
-#ifdef RGBLIGHT_ENABLE
-    { "UG", SUB_MENU(ug_menu) },
-#endif
-    { "BOOT", SUB_MENU(boot_menu)},
-    { "MAGIC", SUB_MENU(magic_menu) },
-);
-#+end_src
-
-You can also reorder existing menus by referring to their names. For example
-#+begin_src C
-MAKE_MENU(magic_menu,
-     // reorder these ones
-     { "SWAP", SUB_MENU(swap_menu) },
-     { "NKRO", SUB_MENU(nkro_menu) },
-     // remove these ones
-     /* { "GKEYS", SUB_MENU(gui_menu) }, */
-     /* { "SPLIT", SUB_MENU(split_menu) }, */
-);
-#+end_src
+*** Default Menus
 
 These are the built-in sub-menus:
 
@@ -82,7 +44,79 @@ These are the built-in sub-menus:
 | =gui_menu=   | Magic keycodes to control GUI keys      |                     |
 | =magic_menu= | Sub menu with above magic keycodes      |                     |
 
-*** TODO Calling Functions
+*** Customizing Individual Menus
+
+If you just want to change a single menu, either adding a new sub-menu, or changing the order or text of existing entries,
+you can use the =MAKE_MENU= macro to define the new/changed menus and then assign them to the correct place
+in =keyboard_post_init_user=.
+
+The structure of the =MAKE_MENU= macro is
+#+begin_src C
+MAKE_MENU(new_name,
+   { "entry 1", ACTION }, // see below for actions
+   { "entry 2", ACTION }, // always include a trailing comma
+); // always terminate with a semicolon
+#+end_src
+
+This defines two new symbols =new_name= which holds the menu state and should be referred to by the =SUB_MENU= action, and
+=new_name_entries= which holds an array of entries and can be assigned to another menu's =entries= field.
+
+The defined actions are
+- =KEY_ACTION(KEYCODE)= to send the given keycode, substituting for the active keyrecord.
+  For example =KEY_ACTION(GU_ON)= sends the Magic Key code for enabling GUI keys.
+- =FUNC_ACTION(NAME)= calls the named function with the current keyrecord as argument.
+  See [[Calling Functions]]
+- =SUB_MENU(NAME)= open the named sub-menu, which must be defined with a =MAKE_MENU= call.
+  For example =SUB_MENU(nkro_menu)= will open the predefined NKRO keys menu.
+
+*Changing Contents*
+
+Use this pattern for reordering, remapping or renaming menu entries.
+
+#+begin_src C
+#include "menu.h"
+
+MAKE_MENU(my_gui_menu,
+    // remove these options from the default menu
+    /* { "GU_OFF" , KEY_ACTION(GU_OFF) }, */
+    /* { "GU_ON"  , KEY_ACTION(GU_ON) }, */
+    { "GU_TOGG", KEY_ACTION(GU_TOGG) },
+);
+
+void keyboard_post_init_user(void) {
+    // careful with the syntax!
+    // <original> DOT entries = <new name> UNDERSCORE entries
+    gui_menu.entries = my_gui_menu_entries;
+}
+#+end_src
+
+*Adding a Menu*
+
+#+begin_src C
+#include "menu.h"
+
+// a totally new menu
+MAKE_MENU(my_fun_menu,
+    {"A", KEY_ACTION(KC_A)},
+    {"B", KEY_ACTION(KC_B)},
+    {"C", KEY_ACTION(KC_C)},
+);
+
+// redefine the menu which will open the new one
+MAKE_MENU(my_top_menu,
+    { "ABC", SUB_MENU(my_fun_menu) },
+    { "BOOT", SUB_MENU(boot_menu) },
+    { "MAGIC", SUB_MENU(magic_menu) },
+);
+
+void keyboard_post_init_user() {
+    // careful with the syntax!
+    // <original> DOT entries = <new name> UNDERSCORE entries
+    top_menu.entries = my_top_menu_entries;
+}
+#+end_src
+
+**** TODO Calling Functions
 
 You can also configure menu items to call functions:
 #+begin_src C
@@ -101,6 +135,25 @@ This means some QMK functions must be wrapped in a new function.
 
 - TODO example of the above
 - TODO check that the example works
+
+*** Redefining All Menus
+
+If you want to make extensive changes to the menu structure, it can be more efficient to start from the existing menu template and
+edit it yourself.
+
+The macros will be the same as in [[Customizing Individual Menus]], with the addition of =TOP_MENU= which defines the root of the menu tree/
+the entry point to the menu.
+
+Follow this procedure:
+1. Copy the =default_menu.c= file from the module into your keymap folder
+2. In your =rules.mk= add
+#+begin_src GNUmakefile
+USE_DEFAULT_MENU = no
+SRC += my_menu.c  # the template menu copied in the last step
+#+end_src
+3. Edit the menu definitions in your keymap menu file
+
+Note: you do not need to assign anything in =keyboard_post_init_user=, the default keymaps are completely overwritten.
 
 ** Tasks
 *** TODO make a community module
