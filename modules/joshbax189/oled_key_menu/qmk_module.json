@@ -21,6 +21,10 @@
         {
             "key": "MENU_ACT",
             "aliases": ["MENUA"]
-        }
+        },
+        {
+            "key": "MENU_RESET",
+            "aliases": ["MENUX"]
+        },
     ]
 }

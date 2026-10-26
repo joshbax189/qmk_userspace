@@ -7,7 +7,7 @@ A menu for OLED displays that exposes keycodes without needing to add them to a 
 1. import module
    - check out submodule to qmk_userspace/modules
    - add joshbax189/oled_key_menu to =keymap.json=
-2. define a layer for menu keys, bind at least =MENU_UP=, =MENU_DOWN=, =MENU_LEFT=, =MENU_RIGHT=,
+2. define a layer for menu keys, bind at least =MENU_UP=, =MENU_DOWN=, =MENU_BACK=, =MENU_ACT=,
    - TODO example
 3. in oled handler: add render function when layer is active
 #+begin_src C

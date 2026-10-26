@@ -32,6 +32,11 @@ bool process_record_oled_key_menu(uint16_t keycode, keyrecord_t *record) {
             menu_down();
         }
         break;
+    case MENU_RESET:
+        if (record->event.pressed) {
+            menu_reset();
+        }
+        break;
     }
 
     return true;
