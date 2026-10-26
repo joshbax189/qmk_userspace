@@ -1,22 +1,5 @@
 #include "menu.h"
 
-// macros
-# define SUB_MENU(name) MENU_SUB, { .sub_menu = &name }
-# define FUNC_ACTION(name) MENU_FN, { .callback = &name }
-# define KEY_ACTION(name) MENU_KC, { .keycode = name }
-
-// use as a delimiter in menus -- avoid storing menu size
-const menu_entry_t MENU_END = { NULL, MENU_SUB, { 0 } };
-
-void my_test(keyrecord_t* foo) {
-    printf("hello world!");
-    return;
-}
-
-#define MAKE_MENU(name, ...) menu_entry_t name ## _entries[] = { __VA_ARGS__ MENU_END }; menu_t name = { .entries = name ## _entries, .index = 0, .parent = NULL }
-
-#define TOP_MENU(...) MAKE_MENU(top_menu, __VA_ARGS__)
-
 #ifdef RGB_MATRIX_ENABLE
 // TODO only togg works -- but all work for UG?
 MAKE_MENU(rgb_menu,

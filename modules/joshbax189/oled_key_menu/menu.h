@@ -40,3 +40,14 @@ void menu_reset(void);
 menu_entry_t get_entry(menu_t*, uint8_t);
 
 void oled_print_menu(void);
+
+/* Menu Delimiter */
+#define MENU_END { NULL, MENU_SUB, { 0 }}
+
+# define SUB_MENU(name) MENU_SUB, { .sub_menu = &name }
+# define FUNC_ACTION(name) MENU_FN, { .callback = &name }
+# define KEY_ACTION(name) MENU_KC, { .keycode = name }
+
+#define MAKE_MENU(name, ...) menu_entry_t name ## _entries[] = { __VA_ARGS__ MENU_END }; menu_t name = { .entries = name ## _entries, .index = 0, .parent = NULL }
+
+#define TOP_MENU(...) MAKE_MENU(top_menu, __VA_ARGS__)
