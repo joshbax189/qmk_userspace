@@ -1,6 +1,8 @@
 #include "menu.h"
 
 menu_t* current_menu = &top_menu;
+/* true if current_menu changed since last oled render */
+bool menu_oled_change = true;
 
 menu_entry_t menu_get_entry(uint8_t index) {
     return current_menu->entries[index];
@@ -27,6 +29,7 @@ void menu_left() {
     /* dprintf("left"); */
     if (current_menu->parent != NULL) {
         current_menu = current_menu->parent;
+        menu_oled_change = true;
     }
     return;
 }
@@ -43,6 +46,7 @@ bool menu_right(keyrecord_t* record) {
         // go to menu in entry
         current_menu = data.sub_menu;
         current_menu->parent = last;
+        menu_oled_change = true;
         return false;
     case MENU_KC:
         record->keycode = data.keycode;
@@ -58,12 +62,17 @@ bool menu_right(keyrecord_t* record) {
 // go back to start
 void menu_reset() {
     current_menu = &top_menu;
+    menu_oled_change = true;
     return;
 }
 
 #ifdef OLED_ENABLE
 void menu_render_oled() {
-    oled_clear();
+    // TODO still may be junk after close/open cycle
+    if (menu_oled_change) {
+        oled_clear();
+        menu_oled_change = false;
+    }
     /* uprintf("menu=%d idx=%d\n", current_menu, current_index); */
     uint8_t i;
     menu_entry_t e;
