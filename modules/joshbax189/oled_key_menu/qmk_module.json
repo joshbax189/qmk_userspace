@@ -12,19 +12,19 @@
         },
         {
             "key": "MENU_DOWN",
-            "aliases": ["MENUD"]
+            "aliases": ["MENUD", "MENU_DN"]
         },
         {
             "key": "MENU_BACK",
-            "aliases": ["MENUB"]
+            "aliases": ["MENUB", "MENU_BK"]
         },
         {
             "key": "MENU_ACT",
-            "aliases": ["MENUA"]
+            "aliases": ["MENUA", "MENU_AT"]
         },
         {
             "key": "MENU_RESET",
-            "aliases": ["MENUX"]
+            "aliases": ["MENUX", "MENU_RS"]
         },
     ]
 }
