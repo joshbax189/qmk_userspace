@@ -16,7 +16,7 @@ int main() {
         printf("in=%c", in);
         switch (in) {
         case 'j':
-            menu_left();
+            menu_back();
             break;
         case 'k':
             menu_up();
@@ -26,7 +26,7 @@ int main() {
             break;
         case ';':
             keyrecord_t foo = { 0 };
-            menu_right(&foo);
+            menu_act(&foo);
             break;
         }
         printf("menu=%d idx=%d\n", current_menu, current_menu->index);

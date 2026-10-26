@@ -15,12 +15,12 @@
             "aliases": ["MENUD"]
         },
         {
-            "key": "MENU_LEFT",
-            "aliases": ["MENUL"]
+            "key": "MENU_BACK",
+            "aliases": ["MENUB"]
         },
         {
-            "key": "MENU_RIGHT",
-            "aliases": ["MENUR"]
+            "key": "MENU_ACT",
+            "aliases": ["MENUA"]
         }
     ]
 }

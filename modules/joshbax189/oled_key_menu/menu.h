@@ -34,8 +34,8 @@ struct menu_t {
 
 void menu_up(void);
 void menu_down(void);
-void menu_left(void);
-bool menu_right(keyrecord_t*);
+void menu_back(void);
+bool menu_act(keyrecord_t*);
 void menu_reset(void);
 menu_entry_t menu_get_entry(uint8_t);
 

@@ -24,8 +24,7 @@ void menu_down() {
     return;
 }
 
-// back
-void menu_left() {
+void menu_back() {
     /* dprintf("left"); */
     if (current_menu->parent != NULL) {
         current_menu = current_menu->parent;
@@ -34,9 +33,8 @@ void menu_left() {
     return;
 }
 
-// enter/forward/send
 // TODO may not need to return bool here
-bool menu_right(keyrecord_t* record) {
+bool menu_act(keyrecord_t* record) {
     /* dprintf("right"); */
     menu_entry_t entry = menu_get_entry(current_menu->index);
     menu_data_t data = entry.data;
@@ -59,7 +57,7 @@ bool menu_right(keyrecord_t* record) {
     return false;
 }
 
-// go back to start
+/* Back to root */
 void menu_reset() {
     current_menu = &top_menu;
     menu_oled_change = true;
@@ -73,7 +71,6 @@ void menu_render_oled() {
         oled_clear();
         menu_oled_change = false;
     }
-    /* uprintf("menu=%d idx=%d\n", current_menu, current_index); */
     uint8_t i;
     menu_entry_t e;
     for (i = 0, e = menu_get_entry(i); e.text != NULL; i++, e = menu_get_entry(i)) {

@@ -12,14 +12,14 @@ bool process_record_oled_key_menu(uint16_t keycode, keyrecord_t *record) {
     }
 
     switch (keycode) {
-    case MENU_LEFT:
+    case MENU_BACK:
         if (record->event.pressed) {
-            menu_left();
+            menu_back();
         }
         break;
-    case MENU_RIGHT:
+    case MENU_ACT:
         if (record->event.pressed) {
-            menu_right(record);
+            menu_act(record);
         }
         break;
     case MENU_UP:
