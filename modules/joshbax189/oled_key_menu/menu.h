@@ -48,6 +48,23 @@ void menu_render_oled(void);
 # define FUNC_ACTION(name) MENU_FN, { .callback = &name }
 # define KEY_ACTION(name) MENU_KC, { .keycode = name }
 
-#define MAKE_MENU(name, ...) menu_entry_t name ## _entries[] = { __VA_ARGS__ MENU_END }; menu_t name = { .entries = name ## _entries, .index = 0, .parent = NULL }
+#define MAKE_MENU(name, ...) \
+    menu_entry_t name ## _entries[] = { __VA_ARGS__ MENU_END };\
+    menu_t name = { .entries = name ## _entries, .index = 0, .parent = NULL }
 
 #define TOP_MENU(...) MAKE_MENU(top_menu, __VA_ARGS__)
+
+#ifdef RGB_MATRIX_ENABLE
+extern menu_t rgb_menu;
+#endif
+
+#ifdef RGBLIGHT_ENABLE
+extern menu_t ug_menu;
+#endif
+
+extern menu_t boot_menu;
+extern menu_t swap_menu;
+extern menu_t nkro_menu;
+extern menu_t gui_menu;
+extern menu_t magic_menu;
+extern menu_t top_menu;
