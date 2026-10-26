@@ -102,11 +102,11 @@ TOP_MENU(
     { "MAGIC", SUB_MENU(magic_menu) },
 );
 
-menu_entry_t get_entry(menu_t* sub, uint8_t idx) {
-    return sub->entries[idx];
-}
-
 menu_t* current_menu = &top_menu;
+
+menu_entry_t menu_get_entry(uint8_t index) {
+    return current_menu->entries[index];
+}
 
 void menu_up() {
     /* dprintf("up"); */
@@ -118,7 +118,7 @@ void menu_up() {
 
 void menu_down() {
     /* dprintf("down"); */
-    if (get_entry(current_menu, (current_menu->index)+1).text != NULL) {
+    if (menu_get_entry((current_menu->index)+1).text != NULL) {
         ++current_menu->index;
     }
     return;
@@ -137,9 +137,9 @@ void menu_left() {
 // TODO may not need to return bool here
 bool menu_right(keyrecord_t* record) {
     /* dprintf("right"); */
-    menu_data_t data = get_entry(current_menu, current_menu->index).data;
-    menu_action_t ty = get_entry(current_menu, current_menu->index).action_type;
-    switch (ty) {
+    menu_entry_t entry = menu_get_entry(current_menu->index);
+    menu_data_t data = entry.data;
+    switch (entry.action_type) {
     case MENU_SUB:
         menu_t* last = current_menu;
         // go to menu in entry
@@ -169,7 +169,7 @@ void oled_print_menu() {
     /* uprintf("menu=%d idx=%d\n", current_menu, current_index); */
     uint8_t i;
     menu_entry_t e;
-    for (i = 0, e = get_entry(current_menu, i); e.text != NULL; i++, e = get_entry(current_menu, i)) {
+    for (i = 0, e = menu_get_entry(i); e.text != NULL; i++, e = menu_get_entry(i)) {
         oled_write_ln(e.text, i == current_menu->index);
     }
     return;

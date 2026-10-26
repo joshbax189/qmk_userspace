@@ -37,7 +37,7 @@ void menu_down(void);
 void menu_left(void);
 bool menu_right(keyrecord_t*);
 void menu_reset(void);
-menu_entry_t get_entry(menu_t*, uint8_t);
+menu_entry_t menu_get_entry(uint8_t);
 
 void oled_print_menu(void);
 
