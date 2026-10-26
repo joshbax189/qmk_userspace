@@ -1,4 +1,4 @@
-// compile with -D QMK_KEYBOARD_H='"test_menu.h"'
+// -*- compile-command: "gcc -D QMK_KEYBOARD_H='\"test_menu.h\"' test_menu.c default_menu.c menu.c"; -*-
 
 #include "menu.h"
 
