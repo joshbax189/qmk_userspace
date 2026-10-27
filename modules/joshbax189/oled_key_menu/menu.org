@@ -4,23 +4,76 @@ A menu for OLED displays that exposes keycodes without needing to add them to a 
 
 *Keycodes*
 
-| Long Name  | Short Name     | Description                                                    |
-|------------+----------------+----------------------------------------------------------------|
-| MENU_UP    | MENUU          | Previous entry, same menu                                      |
-| MENU_DOWN  | MENUD, MENU_DN | Next entry, same menu                                          |
-| MENU_BACK  | MENUB, MENU_BK | Previous menu, if any                                          |
-| MENU_ACT   | MENUA, MENU_AT | Invoke menu action: send keycode, open sub-menu, call function |
-| MENU_RESET | MENUX, MENU_RS | Jump to initial menu                                           |
+| Long Name    | Short Name         | Description                                                    |
+|--------------+--------------------+----------------------------------------------------------------|
+| =MENU_UP=    | =MENUU=            | Previous entry, same menu                                      |
+| =MENU_DOWN=  | =MENUD=, =MENU_DN= | Next entry, same menu                                          |
+| =MENU_BACK=  | =MENUB=, =MENU_BK= | Previous menu, if any                                          |
+| =MENU_ACT=   | =MENUA=, =MENU_AT= | Invoke menu action: send keycode, open sub-menu, call function |
+| =MENU_RESET= | =MENUX=, =MENU_RS= | Jump to initial menu                                           |
+
+*Dependencies*
+
+Adding this module will enable the [[https://docs.qmk.fm/features/repeat_key][repeat key]] feature.
 
 ** Installation
 
-1. import module
-   - check out submodule to qmk_userspace/modules
-   - add joshbax189/oled_key_menu to =keymap.json=
-2. define a layer for menu keys, bind at least =MENU_UP=, =MENU_DOWN=, =MENU_BACK=, =MENU_ACT=,
-   - TODO example
-3. in oled handler: add render function when layer is active
+1. Checkout [[https://github.com/joshbax189/qmk_modules][git submodule]] to either the QMK directory or External Userspace.
+   See [[https://docs.qmk.fm/features/community_modules][QMK Community Modules guide]].
+2. Include the module in your =keymap.json=.
+3. Define a layer for menu keys, bind at least =MENU_UP=, =MENU_DOWN=, =MENU_BACK=, =MENU_ACT=.
+4. Call =menu_render_oled= in =oled_task_user= when menu layer is active.
+
+This is enough to display the default menus.
+
+*** Example
+
+Add the module to =keymap.json=
+#+begin_src json
+{
+    "modules": [
+        "joshbax189/oled_key_menu"
+    ]
+}
+#+end_src
+
+Define a menu layer and call the render function.
 #+begin_src C
+// keymap.c
+#include QMK_KEYBOARD_H
+
+enum layers {
+  _QWERTY,
+  _MENU
+};
+
+// example crkbd layout
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+    [_QWERTY] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LCTL,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_ESC,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          KC_LGUI, MO(_MENU), KC_SPC,    KC_ENT, KC_RCTL, KC_RALT
+                                      //`--------------------------'  `--------------------------'
+
+  ),
+    [_MENU] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, MENU_BK, MENU_DN, MENU_UP, MENU_AT, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX
+                                      //`--------------------------'  `--------------------------'
+  )
+
+
 bool oled_task_user(void) {
   if (get_highest_layer(layer_state) == _MENU) {
     menu_render_oled();
@@ -30,6 +83,9 @@ bool oled_task_user(void) {
   return true;
 }
 #+end_src
+
+This will show the menu while the =MO(_MENU)= key is held, and the right home row keys will navigate through the menu.
+The menu will remain open after each action.
 
 ** Configuration
 
@@ -48,7 +104,7 @@ These are the built-in sub-menus:
 | =boot_menu=  | QMK boot keys                           |                     |
 | =swap_menu=  | Magic keycodes for swap hands           |                     |
 | =nkro_menu=  | Magic keycodes for NKRO                 |                     |
-| =split_menu= | Magic keycodes for Split EEProm setting |                     |
+| =split_menu= | Magic keycodes for Split EEProm setting | =EE_HANDS=          |
 | =gui_menu=   | Magic keycodes to control GUI keys      |                     |
 | =magic_menu= | Sub menu with above magic keycodes      |                     |
 
@@ -73,11 +129,11 @@ The defined actions are
 - =KEY_ACTION(KEYCODE)= to send the given keycode, substituting for the active keyrecord.
   For example =KEY_ACTION(GU_ON)= sends the Magic Key code for enabling GUI keys.
 - =FUNC_ACTION(NAME)= calls the named function with the current keyrecord as argument.
-  See [[Calling Functions]]
+  See below.
 - =SUB_MENU(NAME)= open the named sub-menu, which must be defined with a =MAKE_MENU= call.
   For example =SUB_MENU(nkro_menu)= will open the predefined NKRO keys menu.
 
-*Changing Contents*
+*Changing Menu Content*
 
 Use this pattern for reordering, remapping or renaming menu entries.
 
@@ -124,7 +180,7 @@ void keyboard_post_init_user() {
 }
 #+end_src
 
-**** Calling Functions
+*Calling Functions*
 
 You can also configure menu items to call functions:
 #+begin_src C
@@ -155,14 +211,10 @@ the entry point to the menu.
 
 Follow this procedure:
 1. Copy the =default_menu.c= file from the module into your keymap folder
-2. In your =rules.mk= add
-#+begin_src GNUmakefile
-USE_DEFAULT_MENU = no
-SRC += my_menu.c  # the template menu copied in the last step
-#+end_src
+2. In your =rules.mk= add ~USE_DEFAULT_MENU = no~ and add the new menu as an extra source file, ~SRC += my_menu.c~
 3. Edit the menu definitions in your keymap menu file
 
-Note: you do not need to assign anything in =keyboard_post_init_user=, the default keymaps are completely overwritten.
+*Note*: you do not need to assign anything in =keyboard_post_init_user=, the default keymaps are completely overwritten.
 
 ** Tasks
 *** TODO make a community module
