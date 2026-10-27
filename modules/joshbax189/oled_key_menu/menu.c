@@ -33,9 +33,7 @@ void menu_back() {
     return;
 }
 
-// TODO may not need to return bool here
-bool menu_act(keyrecord_t* record) {
-    /* dprintf("right"); */
+void menu_act(keyrecord_t* record) {
     menu_entry_t entry = menu_get_entry(current_menu->index);
     menu_data_t data = entry.data;
     switch (entry.action_type) {
@@ -45,16 +43,16 @@ bool menu_act(keyrecord_t* record) {
         current_menu = data.sub_menu;
         current_menu->parent = last;
         menu_oled_change = true;
-        return false;
+        break;
     case MENU_KC:
         record->keycode = data.keycode;
         process_record_quantum(record);
-        return true;
+        break;
     case MENU_FN:
         data.callback(record);
-        return true;
+        break;
     }
-    return false;
+    return;
 }
 
 /* Back to root */
