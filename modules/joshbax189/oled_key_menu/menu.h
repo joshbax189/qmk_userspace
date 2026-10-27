@@ -14,7 +14,7 @@ typedef struct menu_t menu_t;
 typedef union {
     uint16_t keycode;
     menu_t* sub_menu;
-    void (*callback)(keyrecord_t*);
+    void (*callback)(void);
 } menu_data_t;
 
 /* A single displayed line in a menu */

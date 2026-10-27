@@ -124,25 +124,26 @@ void keyboard_post_init_user() {
 }
 #+end_src
 
-**** TODO Calling Functions
+**** Calling Functions
 
 You can also configure menu items to call functions:
 #+begin_src C
-void my_neat_function(keyrecord_t* record) {
+void my_neat_function() {
   print("Cool!\n");
   return;
 }
 
+void my_fav_effect() {
+  rgb_matrix_mode(RGB_MATRIX_PIXEL_RAIN);
+}
+
 MAKE_MENU(my_menu,
-     { "CALL", FUNC_ACTION(my_neat_function) }
+     { "COOL", FUNC_ACTION(my_neat_function) },
+     { "MAKE IT RAIN", FUNC_ACTION(my_fav_effect) },
 );
 #+end_src
 
-Note that the function must take =keyrecord_t* record= as an argument.
-This means some QMK functions must be wrapped in a new function.
-
-- TODO example of the above
-- TODO check that the example works
+Note that the function must have prototype =void function(void)=, i.e. takes no arguments.
 
 *** Redefining All Menus
 

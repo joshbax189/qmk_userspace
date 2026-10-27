@@ -49,7 +49,7 @@ void menu_act(keyrecord_t* record) {
         process_record_quantum(record);
         break;
     case MENU_FN:
-        data.callback(record);
+        data.callback();
         break;
     }
     return;
