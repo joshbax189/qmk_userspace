@@ -27,7 +27,6 @@ MAKE_MENU(ug_menu,
 );
 #endif
 
-// TODO QK_BOOT doesn't work
 MAKE_MENU(boot_menu,
      { "RESET", KEY_ACTION(QK_RBT) },
      { "BOOT", KEY_ACTION(QK_BOOT) },
@@ -73,10 +72,12 @@ MAKE_MENU(nkro_menu,
      { "TOGG", KEY_ACTION(NK_TOGG) },
 );
 
+#ifdef EE_HANDS
 MAKE_MENU(split_menu,
      { "EH_LEFT", KEY_ACTION(EH_LEFT)},
      { "EH_RGHT", KEY_ACTION(EH_RGHT)},
 );
+#endif
 
 MAKE_MENU(gui_menu,
     { "GU_OFF" , KEY_ACTION(GU_OFF) },
@@ -85,11 +86,13 @@ MAKE_MENU(gui_menu,
 );
 
 MAKE_MENU(magic_menu,
-     { "NKRO", SUB_MENU(nkro_menu) },
-     { "SWAP", SUB_MENU(swap_menu) },
-     { "GKEYS", SUB_MENU(gui_menu) },
-     { "SPLIT", SUB_MENU(split_menu) },
-);
+    { "NKRO", SUB_MENU(nkro_menu) },
+    { "SWAP", SUB_MENU(swap_menu) },
+    { "GKEYS", SUB_MENU(gui_menu) },
+    #ifdef EE_HANDS
+    { "SPLIT", SUB_MENU(split_menu) },
+    #endif
+    );
 
 TOP_MENU(
 #ifdef RGB_MATRIX_ENABLE
