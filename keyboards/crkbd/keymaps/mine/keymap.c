@@ -17,12 +17,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include QMK_KEYBOARD_H
-#include "../oled.c"
+#include "../layouts.h"
+
+enum layers {
+    _QWERTY_TD,
+    _SYM,
+    _MVMT,
+    _FN
+};
 
 // Tap Dance declarations
 enum {
     TD_MX,
-    TD_CC,
+    TD_CC, //TODO this breaks C-c C-c functions
 };
 
 // Tap Dance definitions
@@ -33,51 +40,51 @@ tap_dance_action_t tap_dance_actions[] = {
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [0] = LAYOUT_split_3x6_3(
+  [_QWERTY_TD] = LAYOUT_CRKBD(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_ESC,
+       KC_TAB,    QWERTY_1,                                                                                                    KC_ESC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LCTL,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, LT(1, KC_ENT),
+      KC_LCTL,    QWERTY_2,                                                                                             LT(_MVMT, KC_ENT),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT,    KC_Z, TD(TD_MX), TD(TD_CC), KC_V,   KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                 OS_LGUI,  KC_LALT, KC_SPC,     KC_BSPC,  MO(2), RALT_T(KC_DEL)
+                                 OS_LGUI,  KC_LALT, KC_SPC,     KC_BSPC,  MO(_SYM), RALT_T(KC_DEL)
                               //`--------------------------'  `--------------------------'
   ),
 
-  [1] = LAYOUT_split_3x6_3(
+  [_MVMT] = LAYOUT_CRKBD(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      XXXXXXX,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      XXXXXXX, XXXXXXX, KC_PGUP,   KC_UP, KC_HOME,  XXXXXXX,
+      _______, NUM_1_5,                                                          _______, _______, KC_PGUP,   KC_UP, KC_HOME, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,                      XXXXXXX, XXXXXXX, KC_LEFT, KC_DOWN, KC_RIGHT, XXXXXXX,
+      _______, NUM_6_0,                                                          _______, _______, KC_LEFT, KC_DOWN,KC_RIGHT, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, KC_PGDN, XXXXXXX,  KC_END, XXXXXXX,
+      BLANK_6,                                                                   _______, _______, KC_PGDN, _______,  KC_END, _______,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          _______, _______, _______,      _______, MO(3), _______
+                                          BLANK_3,                      _______,   MO(_FN), _______
                                       //`--------------------------'  `--------------------------'
   ),
 
-  [2] = LAYOUT_split_3x6_3(
+  [_SYM] = LAYOUT_CRKBD(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      XXXXXXX, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_GRV,
+      _______, SNUM_1_5,                                                        SNUM_6_0,                                      KC_GRV,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_MINS,  KC_EQL, KC_LBRC, KC_RBRC, KC_BSLS, KC_QUOT,
+      BLANK_6,                                                                   MEBRB_SYM_5,                                 KC_QUOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
+      BLANK_6,                                                                   SMEBRB_SYM_5,                                KC_TILD,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          _______, MO(3),   _______,    _______, _______, _______
+                                          _______, MO(_FN),   _______,    BLANK_3
                                       //`--------------------------'  `--------------------------'
   ),
 
-  [3] = LAYOUT_split_3x6_3(
+  [_FN] = LAYOUT_CRKBD(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      QK_BOOT,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                        KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,
+      QK_BOOT, F_1_5,                                                            F_6_0,                                        KC_F11,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  KC_F12,
+      BLANK_6,                                                                   BLANK_5,                                      KC_F12,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      BLANK_6,                                                                   BLANK_6,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          _______, _______, _______,    _______, _______, _______
+                                          BLANK_3,                      BLANK_3
                                       //`--------------------------'  `--------------------------'
   )
 };
