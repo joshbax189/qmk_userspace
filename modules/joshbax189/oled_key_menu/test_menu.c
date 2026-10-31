@@ -9,28 +9,46 @@ void process_record_quantum(keyrecord_t* x) {
     return;
 }
 
+void oled_clear() {
+    return;
+}
+
+void oled_write_ln(char* line, bool invert) {
+    printf(line);
+    if (invert) {
+        printf(" <\n");
+    } else {
+        printf("\n");
+    }
+}
+
 int main() {
     while (true) {
         char in;
         scanf("%c", &in);
-        printf("in=%c", in);
         switch (in) {
         case 'j':
             menu_back();
+            printf("---\n");
+            menu_render_oled();
             break;
         case 'k':
             menu_up();
+            printf("---\n");
+            menu_render_oled();
             break;
         case 'l':
             menu_down();
+            printf("---\n");
+            menu_render_oled();
             break;
         case ';':
             keyrecord_t foo = { 0 };
             menu_act(&foo);
+            printf("---\n");
+            menu_render_oled();
             break;
         }
-        printf("menu=%d idx=%d\n", current_menu, current_menu->index);
-        printf("%s\n", menu_get_entry(current_menu->index).text);
     }
 
     return 0;
