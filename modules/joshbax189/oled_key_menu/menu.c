@@ -69,9 +69,12 @@ void menu_render_oled() {
         oled_clear();
         menu_oled_change = false;
     }
-    uint8_t i;
-    menu_entry_t e;
-    for (i = 0, e = menu_get_entry(i); e.text != NULL; i++, e = menu_get_entry(i)) {
+    uint8_t start = current_menu->index >= MENU_MAX_DISPLAY_LINES ? (current_menu->index - MENU_MAX_DISPLAY_LINES + 1) : 0;
+    uint8_t end = start + MENU_MAX_DISPLAY_LINES;
+
+    uint8_t i = start;
+    menu_entry_t e = menu_get_entry(i);
+    for (; e.text != NULL && i < end; i++, e = menu_get_entry(i)) {
         oled_write_ln(e.text, i == current_menu->index);
     }
     return;

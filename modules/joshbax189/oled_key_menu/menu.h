@@ -72,3 +72,5 @@ extern menu_t media_menu;
 #endif
 extern menu_t sys_menu;
 extern menu_t top_menu;
+
+#define MENU_MAX_DISPLAY_LINES 10
