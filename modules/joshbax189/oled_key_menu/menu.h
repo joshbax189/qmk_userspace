@@ -67,4 +67,8 @@ extern menu_t swap_menu;
 extern menu_t nkro_menu;
 extern menu_t gui_menu;
 extern menu_t magic_menu;
+#ifdef EXTRAKEY_ENABLE
+extern menu_t media_menu;
+#endif
+extern menu_t sys_menu;
 extern menu_t top_menu;

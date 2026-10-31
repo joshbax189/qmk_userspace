@@ -32,6 +32,24 @@ MAKE_MENU(boot_menu,
      { "BOOT", KEY_ACTION(QK_BOOT) },
 );
 
+MAKE_MENU(sys_menu,
+     { "POWER", KEY_ACTION(KC_PWR) },
+     { "SLEEP", KEY_ACTION(KC_SLEP) },
+     { "WAKE", KEY_ACTION(KC_WAKE) },
+);
+
+#ifdef EXTRAKEY_ENABLE
+MAKE_MENU(media_menu,
+     { "MUTE", KEY_ACTION(KC_MUTE) },
+     { "VOLU", KEY_ACTION(KC_VOLU) },
+     { "VOLD", KEY_ACTION(KC_VOLD) },
+     { "NEXT", KEY_ACTION(KC_MNXT) },
+     { "PREV", KEY_ACTION(KC_MPRV) },
+     { "STOP", KEY_ACTION(KC_STOP) },
+     { "PLAY", KEY_ACTION(KC_MPLY) },
+);
+#endif
+
 // TODO other magic codes
 /* { "CL_SWAP", MENU_KC, { .keycode = CL_SWAP } }, */
 /* { "CL_NORM", MENU_KC, { .keycode = CL_NORM } }, */
@@ -103,4 +121,8 @@ TOP_MENU(
 #endif
     { "BOOT", SUB_MENU(boot_menu)},
     { "MAGIC", SUB_MENU(magic_menu) },
+#ifdef EXTRAKEY_ENABLE
+    { "MEDIA", SUB_MENU(media_menu) },
+#endif
+    { "SYS", SUB_MENU(sys_menu) },
 );
