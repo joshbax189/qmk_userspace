@@ -5,8 +5,8 @@ menu_t* current_menu = &top_menu;
 bool menu_oled_change = true;
 uint8_t current_menu_depth = 1;
 
-menu_entry_t menu_get_entry(uint8_t index) {
-    return current_menu->entries[index];
+const menu_entry_t* menu_get_entry(uint8_t index) {
+    return &current_menu->entries[index];
 }
 
 void menu_up() {
@@ -19,7 +19,7 @@ void menu_up() {
 
 void menu_down() {
     /* dprintf("down"); */
-    if (menu_get_entry((current_menu->index)+1).text != NULL) {
+    if (menu_get_entry((current_menu->index)+1)->text != NULL) {
         ++current_menu->index;
     }
     return;
@@ -36,9 +36,9 @@ void menu_back() {
 }
 
 void menu_act(keyrecord_t* record) {
-    menu_entry_t entry = menu_get_entry(current_menu->index);
-    menu_data_t data = entry.data;
-    switch (entry.action_type) {
+    const menu_entry_t* entry = menu_get_entry(current_menu->index);
+    menu_data_t data = entry->data;
+    switch (entry->action_type) {
     case MENU_SUB:
         menu_t* last = current_menu;
         // go to menu in entry
@@ -90,14 +90,14 @@ void menu_render_oled() {
     oled_write_ln("", false);
 
     uint8_t i = start;
-    menu_entry_t e = menu_get_entry(i);
-    for (; e.text != NULL && i < end; i++, e = menu_get_entry(i)) {
-        oled_write_ln(e.text, i == current_menu->index);
+    const menu_entry_t* e = menu_get_entry(i);
+    for (; e->text != NULL && i < end; i++, e = menu_get_entry(i)) {
+        oled_write_ln(e->text, i == current_menu->index);
     }
 
     // footer
     // there is more
-    if (i == end && e.text != NULL) {
+    if (i == end && e->text != NULL) {
         // print some arrows
         for (int j=0; j<3; j++) {
             oled_write_char(0x1F, false);

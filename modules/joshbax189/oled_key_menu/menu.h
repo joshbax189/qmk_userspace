@@ -37,7 +37,7 @@ void menu_down(void);
 void menu_back(void);
 void menu_act(keyrecord_t*);
 void menu_reset(void);
-menu_entry_t menu_get_entry(uint8_t);
+const menu_entry_t* menu_get_entry(uint8_t);
 
 void menu_render_oled(void);
 
