@@ -102,6 +102,8 @@ void menu_render_oled() {
         for (int j=0; j<3; j++) {
             oled_write_char(0x1F, false);
         }
+    } else {
+        oled_write_ln("", false);
     }
 
     return;
