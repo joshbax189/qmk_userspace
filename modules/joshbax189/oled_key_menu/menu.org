@@ -72,7 +72,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                           XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX
                                       //`--------------------------'  `--------------------------'
   )
+};
 
+// Ensure display is cleared when menu is opened or closed.
+// You could add equivalent code to oled_task_user instead, if you prefer
+layer_state_t layer_state_set_user(layer_state_t state) {
+  static bool is_menu_open = false;
+  if (get_highest_layer(state) == _MENU) {
+    if (!is_menu_open) {
+      oled_clear();
+      is_menu_open = true;
+    }
+  } else {
+    if (is_menu_open) {
+      oled_clear();
+      is_menu_open = false;
+    }
+  }
+
+  return state;
+}
 
 bool oled_task_user(void) {
   if (get_highest_layer(layer_state) == _MENU) {
