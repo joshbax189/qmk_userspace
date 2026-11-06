@@ -67,13 +67,15 @@ void menu_reset() {
 
 #ifdef OLED_ENABLE
 void menu_render_oled() {
-    // TODO still may be junk after close/open cycle
+    // reserve one line to display depth pips and one to display arrow indicators
+    uint8_t max_display_lines = oled_max_lines() - 2;
+
     if (menu_oled_change) {
         oled_clear();
         menu_oled_change = false;
     }
-    uint8_t start = current_menu->index >= MENU_MAX_DISPLAY_LINES ? (current_menu->index - MENU_MAX_DISPLAY_LINES + 1) : 0;
-    uint8_t end = start + MENU_MAX_DISPLAY_LINES;
+    uint8_t start = current_menu->index >= max_display_lines ? (current_menu->index - max_display_lines + 1) : 0;
+    uint8_t end = start + max_display_lines;
 
     // header
     if (start != 0) {
