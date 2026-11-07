@@ -1,0 +1,3 @@
+[submodule "modules/joshbax189"]
+	path = modules/joshbax189
+	url = git@github.com:joshbax189/qmk_modules.git
