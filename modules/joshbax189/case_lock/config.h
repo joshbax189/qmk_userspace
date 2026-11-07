@@ -1,1 +1,0 @@
-#define CASE_LOCK_TIMEOUT 1000
