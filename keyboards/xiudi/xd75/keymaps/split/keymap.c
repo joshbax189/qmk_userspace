@@ -71,8 +71,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL, QWERTY_2,                                                                            KC_ENT,
         KC_LSFT, QWERTY_3,                                                                            KC_RSFT,
         // TODO double binding of LGUI
-        // TODO never use RGUI, RALT
-        CASE_L,  KC_LGUI, KC_LGUI, KC_LALT, FUNC, KC_SPC, KC_BSPC, SYNTAX, KC_RCTL, KC_RALT, KC_RGUI, NUM
+        // TODO never use RALT
+        CASE_L,  KC_LGUI, KC_LGUI, KC_LALT, FUNC, KC_SPC, KC_BSPC, SYNTAX, KC_RCTL, KC_RALT, DM_PLY1, NUM
     ),
 /* ,--------------------------------------------------------------------------------------------------------.
  * |QK_BOO|  F1  |  F2  |  F3  |  F4  |  F5  |      |      |      |  F6  |  F7  |  F8  |  F9  | F10  | F11  |
@@ -91,7 +91,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, KC_MSTP, KC_VOLU, KC_MPLY, UG_HUED, UG_HUEU, KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_SCRL, KC_F12,
         KC_CAPS, KC_MPRV, KC_VOLD, KC_MNXT, UG_SATD, UG_SATU, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, _______, KC_PAUS,
         _______, _______, KC_MUTE, _______, UG_VALD, UG_VALU, BLANK_6,
-        _______, _______, UG_TOGG, _______, UG_PREV, UG_NEXT, BLANK_6
+        _______, _______, UG_TOGG, _______,    FUNC, UG_NEXT, BLANK_3,                   _______, DM_REC1, _______
     ),
 /* ,--------------------------------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
@@ -151,12 +151,17 @@ const rgblight_segment_t PROGMEM my_layer3_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {4, 2, HSV_CYAN}
 );
 
+const rgblight_segment_t PROGMEM macro_rec_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {4, 2, HSV_GREEN}
+);
+
 // Now define the array of layers. Later layers take precedence
 const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     my_capslock_layer,
     my_layer1_layer,
     my_layer2_layer,
-    my_layer3_layer
+    my_layer3_layer,
+    macro_rec_layer
 );
 
 void keyboard_post_init_user(void) {
@@ -169,6 +174,18 @@ bool led_update_user(led_t led_state) {
     rgblight_set_layer_state(0, led_state.caps_lock);
     return true;
 }
+
+#ifdef DYNAMIC_MACRO_ENABLE
+bool dynamic_macro_record_start_user(int8_t direction) {
+    rgblight_set_layer_state(4, true);
+    return true;
+}
+
+bool dynamic_macro_record_end_user(int8_t direction) {
+    rgblight_set_layer_state(4, false);
+    return true;
+}
+#endif // DYNAMIC_MACRO_ENABLE
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     rgblight_set_layer_state(1, layer_state_cmp(state, _FN));
